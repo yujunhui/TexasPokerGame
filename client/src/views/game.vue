@@ -550,6 +550,10 @@ export default class Game extends Vue {
       }
     });
 
+    this.socket.on('spectate', (msg: IMsg) => {
+      console.log('------spectate', msg);
+    });
+
     // 系统事件
     this.socket.on('disconnect', (msg: IMsg) => {
       this.$plugin.toast('room is disconnect');

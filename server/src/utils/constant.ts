@@ -1,7 +1,11 @@
 export enum AdapterType {
   Online = 'online',
+  // 观战
+  Spectate = 'spectate',
 }
+
 export const Online = AdapterType.Online;
+export const Spectate = AdapterType.Spectate;
 
 /**
  * 发送给所有在线客户端的 action 类型
@@ -32,4 +36,8 @@ export enum P2PAction {
   Deny = 'deny',
 }
 
-export type Action = OnlineAction | P2PAction;
+export enum SpectateAction {
+  GameInfo = 'gameInfo',
+}
+
+export type Action = OnlineAction | P2PAction | SpectateAction;

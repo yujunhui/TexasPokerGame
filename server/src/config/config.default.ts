@@ -11,10 +11,6 @@ export default (appInfo: MidwayAppInfo) => {
   config.keys = appInfo.name + '_20231118221445';
   config.middleware = ['notFound'];
 
-  const bizConfig = {
-    sourceUrl: '',
-  };
-
   // security
   config.security = {
     csrf: { enable: false },
@@ -100,8 +96,26 @@ export default (appInfo: MidwayAppInfo) => {
     agent: false,
   };
 
+  // 上面是 eggjs 的配置
+
+  // 注意, 使用不同的 ctx, 获取到的 log 对象的 format 方法是不一样的
+  const midwayConfig = {
+    sourceUrl: '',
+    midwayLogger: {
+      default: {
+        level: 'info',
+      },
+      clients: {
+        ioLogger: {
+          fileLogName: 'io.log',
+          level: 'debug',
+        },
+      },
+    },
+  };
+
   return {
-    ...bizConfig,
     ...config,
+    ...midwayConfig,
   } as MidwayConfig;
 };

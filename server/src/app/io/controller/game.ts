@@ -194,7 +194,7 @@ class GameController extends BaseSocketController {
                 }
               });
             }
-            await this.updateGameInfo();
+            this.updateGameInfo();
             console.log('auto Action');
           },
         });
@@ -202,7 +202,7 @@ class GameController extends BaseSocketController {
         // roomInfo.game.startActionRound();
         console.log('hand card', roomInfo.game.allPlayer);
         // update counter, pot, status
-        await this.updateGameInfo();
+        this.updateGameInfo();
         // add game record
         const gameRecord: IGame = {
           roomNumber: this.roomNumber,
@@ -365,6 +365,7 @@ class GameController extends BaseSocketController {
         };
         roomInfo.players.push(player);
       }
+      this.sendGameInfoToSpectators();
       console.log(player, 'buy in player', roomInfo.players);
       if (!isGaming) {
         this.adapter(Online, OnlineAction.Players, {
@@ -404,17 +405,18 @@ class GameController extends BaseSocketController {
     }
   }
 
-  async sitDown() {
+  sitDown() {
     try {
       const { payload } = this.message;
       const sitList = payload.sitList;
-      const roomInfo = await this.getRoomInfo();
+      const roomInfo = this.getRoomInfo();
       console.log('sitList=============', sitList);
       console.log('roomInfo=============', roomInfo);
       roomInfo.sit = sitList;
       this.adapter(Online, OnlineAction.SitList, {
         sitList,
       });
+      this.sendGameInfoToSpectators();
     } catch (e) {
       console.log(e);
     }
@@ -430,7 +432,7 @@ class GameController extends BaseSocketController {
           delete s.player;
         }
       });
-      await this.updateGameInfo();
+      this.updateGameInfo();
     } catch (e) {
       console.log(e);
     }
@@ -450,6 +452,7 @@ class GameController extends BaseSocketController {
           actionEndTime: roomInfo.game.actionEndTime,
         });
       }
+      this.sendGameInfoToSpectators();
     } catch (e) {
       console.log(e);
     }
@@ -458,8 +461,8 @@ class GameController extends BaseSocketController {
   async action() {
     try {
       const { payload } = this.message;
-      const userInfo: IPlayer = await this.getUserInfo();
-      const roomInfo = await this.getRoomInfo();
+      const userInfo = await this.getUserInfo();
+      const roomInfo = this.getRoomInfo();
       console.log('action: ', payload.command);
       console.log('action: ', roomInfo.game && roomInfo.game.currPlayer.node, userInfo);
       this.adapter(Online, OnlineAction.LatestAction, {
@@ -496,7 +499,7 @@ class GameController extends BaseSocketController {
         };
         roomInfo.game.currPlayer.node.updateVPIP(payload.command.split(':')[0], commonCard.length);
         roomInfo.game.action(payload.command);
-        // currPlayer 在这里(action)后会改变了
+        // NOTICE 需要注意 currPlayer 在这里(action)后会改变了
         const commandArr = payload.command.split(':');
         const command = commandArr[0];
         // fold change status: -1

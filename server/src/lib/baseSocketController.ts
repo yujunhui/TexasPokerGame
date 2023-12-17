@@ -1,7 +1,7 @@
 import { Controller } from 'egg';
 import { IGameRoom, IRoomInfo } from '../interface/IGameRoom';
 import { IPlayer } from '../app/core/Player';
-import { AdapterType, Online, OnlineAction } from '../utils/constant';
+import { Action, AdapterType, Online, OnlineAction, Spectate, SpectateAction } from '../utils/constant';
 
 export default class BaseSocketController extends Controller {
   public app = this.ctx.app as any;
@@ -25,7 +25,7 @@ export default class BaseSocketController extends Controller {
     return roomInfo.roomInfo;
   }
 
-  protected adapter(type: AdapterType, actionName: OnlineAction, data: any) {
+  protected adapter(type: AdapterType, actionName: Action, data: any) {
     this.nsp.adapter.clients([this.roomNumber], (err: any, clients: any) => {
       this.nsp.to(this.roomNumber).emit(type, {
         clients,
@@ -90,6 +90,33 @@ export default class BaseSocketController extends Controller {
       };
       console.log('gameInfo ==========', gameInfo);
       this.adapter(Online, OnlineAction.GameInfo, gameInfo);
+      this.sendGameInfoToSpectators();
     }
+  }
+
+  protected sendGameInfoToSpectators() {
+    const roomInfo = this.getRoomInfo();
+    this.adapter(Spectate, SpectateAction.GameInfo, {
+      commonCard: roomInfo.game?.commonCard,
+      actionEndTime: roomInfo.game?.actionEndTime,
+      sitPlayers: roomInfo.sit.map((sit) => {
+        const sitPlayer = sit.player;
+        const userId = sitPlayer?.userId;
+        const player = roomInfo.game?.allPlayer.find((p) => p.userId === userId);
+        const mirrorPlayer = roomInfo.players.find((p) => p.userId === userId);
+        return {
+          isCurrentPlayer: userId && roomInfo.game?.currPlayer.node.userId === userId,
+          userId,
+          nickName: player?.nickName || sitPlayer?.nickName,
+          position: player?.position,
+          handCard: player?.getHandCard(),
+          actionCommand: player?.actionCommand,
+          actionSize: player?.actionSize,
+          delayTime: player?.delayCount,
+          counter: player?.counter,
+          buyIn: mirrorPlayer?.buyIn,
+        };
+      }),
+    });
   }
 }
