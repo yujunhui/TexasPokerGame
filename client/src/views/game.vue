@@ -638,7 +638,9 @@ export default class Game extends Vue {
           });
 
           if (this.audioStatus && msg.message.msg.split(':')[0] !== this.userInfo.nickName && this.playMessageSound()) {
-            this.speakText(msg.message.msg.replace(':', '话 '));
+            // Adrian不想要这个字，普通话不好听
+            // this.speakText(msg.message.msg.replace(':', '话 '));
+            this.speakText(msg.message.msg);
           }
         }
 

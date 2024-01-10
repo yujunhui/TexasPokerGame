@@ -118,29 +118,36 @@ export default class SpeakSettings extends Vue {
 <style scoped lang="less">
 .speak-settings {
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 99;
+  overflow: hidden;
 
   .shadow {
-    position: fixed;
+    position: absolute;
     z-index: 9;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.2);
   }
 
   .speak-settings-body {
     z-index: 99;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -150px);
-    width: 90%;
+    position: relative;
+    min-height: 300px;
+    max-height: 80vh;
+    width: 80%;
+    margin: auto;
     border-radius: 12px;
     box-sizing: border-box;
     background: #fff;
     padding: 20px;
+    overflow-y: auto;
 
     h3:not(:first-of-type) {
       padding-top: 30px;
@@ -158,7 +165,7 @@ export default class SpeakSettings extends Vue {
   }
 
   .option {
-    margin-top: 10px;
+    margin-top: 2px;
   }
 }
 </style>
