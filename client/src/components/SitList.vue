@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <BuyIn :showBuyIn.sync="showBuyIn" :min="0" :max="roomConfig.smallBlind * 200" @buyIn="buyIn"></BuyIn>
+    <BuyIn :showBuyIn.sync="showBuyIn" :min="0" :max="maxBuyInSize" @buyIn="buyIn"></BuyIn>
   </div>
 </template>
 
@@ -113,6 +113,7 @@ export default class SitList extends Vue {
   @Prop() private valueCards!: string;
   @Prop({ default: 30, type: Number }) private time!: number;
   @Prop() private playersStatus!: IPlayersStatus;
+  @Prop() private maxBuyInSize!: number;
 
   private sitLinkNode: any = '';
   private showBuyIn = false;
@@ -125,9 +126,10 @@ export default class SitList extends Vue {
 
   private buyIn(size: number) {
     this.showBuyIn = false;
-    this.currPlayer.counter += Number(size);
-    this.$emit('buyIn', Number(size));
-    this.sitDown(this.currSit);
+    this.$emit('buyIn', Number(size), () => {
+      this.currPlayer.counter += Number(size);
+      this.sitDown(this.currSit);
+    });
   }
 
   private showHandCard(sit: ISit) {

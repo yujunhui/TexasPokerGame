@@ -41,7 +41,8 @@ export default class BuyIn extends Vue {
 
   private async buyIn() {
     this.closeBuyIn();
-    this.$emit('buyIn', this.buyInSize);
+    this.$emit('buyIn', Number(this.buyInSize));
+    this.buyInSize = this.min;
   }
   private mounted() {
     this.buyInSize = this.min;
