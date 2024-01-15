@@ -12,6 +12,7 @@ export default class App extends Vue {}
 
 <style lang="less">
 @import 'assets/less/base';
+@import 'assets/global.css';
 @import '~animate.css';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

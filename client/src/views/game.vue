@@ -60,8 +60,8 @@
     <div class="setting">
       <div class="shadow" @click="toggleSetting()" v-if="showSetting"></div>
       <div class="setting-btn" @click="toggleSetting()"></div>
-      <Transition name="setting-fade">
-        <div class="setting-body" v-if="showSetting">
+      <Transition name="fade">
+        <div class="setting-body" v-show="showSetting">
           <p @click="toggleSetting()" class="setting-close">X</p>
           <p @click="$router.replace({ name: 'home' })">Home</p>
           <p @click="showBuyInDialog()">Buy In</p>
@@ -75,7 +75,9 @@
     <BuyIn :showBuyIn.sync="showBuyIn" :min="0" :max="canBuyInSize" @buyIn="buyIn"></BuyIn>
     <SpeakSettings :showSpeakSettings.sync="showSpeakSettings"></SpeakSettings>
     <toast :show.sync="showMsg" :text="msg"></toast>
-    <record :players="players" v-model="showRecord"></record>
+    <Transition name="fade">
+      <record :players="players" v-model="showRecord" v-show="showRecord"></record>
+    </Transition>
     <sendMsg @send="sendMsgHandle" @sendAudio="sendAudio" :msg-list="msgListReverse"></sendMsg>
     <iAudio :play="playIncome && audioStatus" type="income"></iAudio>
     <iAudio :play="playRaiseNotice && audioStatus" type="raise-notice"></iAudio>
@@ -989,15 +991,6 @@ export default class Game extends Vue {
         }
       }
     }
-  }
-
-  .setting-fade-enter-active,
-  .setting-fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  .setting-fade-enter,
-  .setting-fade-leave-to {
-    opacity: 0;
   }
 
   .game-record {

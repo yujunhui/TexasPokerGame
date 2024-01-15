@@ -1,49 +1,51 @@
 <template>
-  <div class="speak-settings" v-show="showSpeakSettings">
-    <div class="shadow" @click="closeSpeakSettings"></div>
-    <div class="speak-settings-body">
-      <h3>一. 可用中文语音包</h3>
-      <ul v-if="voices.length > 0" class="voice-list">
-        <li
-          v-for="voice in voices"
-          :key="voice.name"
-          :class="{ 'selected-voice': selectedVoice === voice.name }"
-          @click="testVoice(voice)"
-        >
-          {{ voice.name }} ({{ voice.lang }})
-        </li>
-      </ul>
-      <p v-else>没有可用的中文语音包</p>
-      <h3>二. 语音播放场景</h3>
-      <div class="option">
-        <label>
-          <input type="checkbox" v-model="playReminderSound" @change="saveSettings" />
-          轮到你执行操作时
-        </label>
-      </div>
+  <Transition name="fade">
+    <div class="speak-settings" v-show="showSpeakSettings">
+      <div class="shadow" @click="closeSpeakSettings"></div>
+      <div class="speak-settings-body">
+        <h3>一. 可用中文语音包</h3>
+        <ul v-if="voices.length > 0" class="voice-list">
+          <li
+            v-for="voice in voices"
+            :key="voice.name"
+            :class="{ 'selected-voice': selectedVoice === voice.name }"
+            @click="testVoice(voice)"
+          >
+            {{ voice.name }} ({{ voice.lang }})
+          </li>
+        </ul>
+        <p v-else>没有可用的中文语音包</p>
+        <h3>二. 语音播放场景</h3>
+        <div class="option">
+          <label>
+            <input type="checkbox" v-model="playReminderSound" @change="saveSettings" />
+            轮到你执行操作时
+          </label>
+        </div>
 
-      <div class="option">
-        <label>
-          <input type="checkbox" v-model="playMessageSound" @change="saveSettings" />
-          别人发送消息语音时
-        </label>
-      </div>
+        <div class="option">
+          <label>
+            <input type="checkbox" v-model="playMessageSound" @change="saveSettings" />
+            别人发送消息语音时
+          </label>
+        </div>
 
-      <div class="option">
-        <label>
-          <input type="checkbox" v-model="playRaiseReminderSound" @change="saveSettings" />
-          到你时提示别人的Raise
-        </label>
-      </div>
-      <h3>三. 语音播放额外设置</h3>
-      <div class="option">
-        <label>
-          <input type="checkbox" v-model="isRandomVoice" @change="saveSettings" />
-          随机语音模式
-        </label>
+        <div class="option">
+          <label>
+            <input type="checkbox" v-model="playRaiseReminderSound" @change="saveSettings" />
+            到你时提示别人的Raise
+          </label>
+        </div>
+        <h3>三. 语音播放额外设置</h3>
+        <div class="option">
+          <label>
+            <input type="checkbox" v-model="isRandomVoice" @change="saveSettings" />
+            随机语音模式
+          </label>
+        </div>
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script lang="ts">

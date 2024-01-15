@@ -1,17 +1,19 @@
 <template>
-  <div class="buy-in" v-show="showBuyIn">
-    <div class="shadow" @click="closeBuyIn"></div>
-    <div class="buy-in-body">
-      <div class="input-bd">
-        <div class="input-name">
-          <span>buy in:</span>
-          <input type="number" v-model="buyInSize" />
+  <Transition name="fade">
+    <div class="buy-in" v-show="showBuyIn">
+      <div class="shadow" @click="closeBuyIn"></div>
+      <div class="buy-in-body">
+        <div class="input-bd">
+          <div class="input-name">
+            <span>buy in:</span>
+            <input type="number" v-model="buyInSize" />
+          </div>
+          <range :max="max" :min="min" v-model="buyInSize" @change="getBuyInSize"></range>
         </div>
-        <range :max="max" :min="min" v-model="buyInSize" @change="getBuyInSize"></range>
+        <div class="btn"><span @click="buyIn">buy in</span></div>
       </div>
-      <div class="btn"><span @click="buyIn">buy in</span></div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script lang="ts">
