@@ -16,7 +16,7 @@
           <i>{{ player.buyIn }}</i>
           <i>{{ player.counter }}</i>
           <i>{{ player.counter - player.buyIn }}</i>
-          <i>{{ formatVPIP(player) }})</i>
+          <i>{{ formatVPIP(player) }}</i>
         </li>
       </ul>
     </div>
