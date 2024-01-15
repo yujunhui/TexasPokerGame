@@ -2,25 +2,21 @@
   <div class="record-container" v-show="show">
     <div class="shadow" @click="show = false"></div>
     <div class="body">
-      <div class="title">record</div>
+      <div class="title">牌局记录</div>
       <ul>
         <li>
           <i>nickName</i>
           <i>buy in</i>
           <i>counter</i>
           <i>income</i>
-          <i>V</i>
-          <i>A</i>
-          <i>VPIP</i>
+          <i>VPIP(V/Total)</i>
         </li>
         <li v-for="player in players">
           <i>{{ player.nickName }}</i>
           <i>{{ player.buyIn }}</i>
           <i>{{ player.counter }}</i>
           <i>{{ player.counter - player.buyIn }}</i>
-          <i>{{ player.voluntaryActionCountAtPreFlop }}</i>
-          <i>{{ player.totalActionCountAtPreFlop }}</i>
-          <i>{{ (player.vpip * 100).toFixed(2) }}%</i>
+          <i>{{ formatVPIP(player) }})</i>
         </li>
       </ul>
     </div>
@@ -44,6 +40,13 @@ export default class Record extends Vue {
 
   set show(val) {
     this.$emit('input', val);
+  }
+
+  public formatVPIP(player: IPlayer) {
+    const rate = (player.vpip * 100).toFixed(2);
+    const v = player.voluntaryActionCountAtPreFlop;
+    const a = player.totalActionCountAtPreFlop;
+    return `${rate}% (${v}/${a})`;
   }
 }
 </script>
