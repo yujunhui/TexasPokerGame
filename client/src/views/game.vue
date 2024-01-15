@@ -3,20 +3,21 @@
     <Loader class="loader-position" :active="!socketStatus" message="服务器连接中..." />
 
     <sitList
-      :sitLink.sync="sitLink"
-      :currPlayer="currPlayer"
-      :playersStatus="playersStatus"
-      :commonCard="commonCard"
-      @sit="sitDown"
-      @buyIn="buyIn"
-      :isPlay="isPlay"
-      :valueCards="valueCards"
-      :roomConfig="roomConfig"
-      @delay="delay"
-      :time.sync="time"
-      :winner="winner"
       :actionUserId="actionUserId"
+      :commonCard="commonCard"
+      :currPlayer="currPlayer"
       :hand-card="handCard"
+      :isPlay="isPlay"
+      :max-buy-in-size="canBuyInSize"
+      :playersStatus="playersStatus"
+      :roomConfig="roomConfig"
+      :sitLink.sync="sitLink"
+      :time.sync="time"
+      :valueCards="valueCards"
+      :winner="winner"
+      @buyIn="buyIn"
+      @delay="delay"
+      @sit="sitDown"
     ></sitList>
 
     <div class="game-canvas">
@@ -66,7 +67,7 @@
         <i @click="closeAudio()">audio ({{ `${audioStatus ? 'open' : 'close'}` }})</i>
       </div>
     </div>
-    <BuyIn :showBuyIn.sync="showBuyIn" :min="0" :max="baseSize * 200" @buyIn="buyIn"></BuyIn>
+    <BuyIn :showBuyIn.sync="showBuyIn" :min="0" :max="canBuyInSize" @buyIn="buyIn"></BuyIn>
     <SpeakSettings :showSpeakSettings.sync="showSpeakSettings"></SpeakSettings>
     <toast :show.sync="showMsg" :text="msg"></toast>
     <record :players="players" v-model="showRecord"></record>
@@ -111,7 +112,7 @@ import service from '../service';
 import gameRecord from '@/components/GameRecord.vue';
 import Loader from '@/components/Loader.vue';
 import { IGameRecord } from '@/interface/IGameRecord';
-import { Online, OnlineAction, P2PAction } from '@/utils/constant';
+import { Online, OnlineAction, P2PAction, MaxBuyInFactor } from '@/utils/constant';
 import { Howl } from 'howler';
 
 export enum ECommand {
@@ -215,6 +216,39 @@ export default class Game extends Vue {
 
   get baseSize() {
     return this.roomConfig.smallBlind || GAME_BASE_SIZE;
+  }
+
+  // 获取当前用户的买入筹码数
+  get currentBuyInSize() {
+    return this.currPlayer?.buyIn || 0;
+  }
+
+  get maxOneOffBuyInSize() {
+    return this.baseSize * MaxBuyInFactor;
+  }
+
+  get limitBuyInSize() {
+    return (Math.floor(this.currentBuyInSize / this.maxOneOffBuyInSize) + 1) * this.maxOneOffBuyInSize;
+  }
+
+  get canBuyInSize() {
+    // 如果没输完, 且当前的buyin size 不是0(不是第一次买入)
+    // 那么看看能不能整除单次买入的最大buyin size
+    // 能整除代表到达买入限制了
+    if (
+      this.currentCounter !== 0 &&
+      this.currentBuyInSize !== 0 &&
+      this.currentBuyInSize % this.maxOneOffBuyInSize === 0
+    ) {
+      return 0;
+    }
+    return this.limitBuyInSize - this.currentBuyInSize;
+  }
+
+  // 获取当前用户的筹码数(买入+赢)
+  get currentCounter() {
+    const player = this.players.find((u: IPlayer) => this.userInfo.userId === u.userId);
+    return this.currPlayer?.counter || 0;
   }
 
   get latestSpecialAction() {
@@ -693,21 +727,28 @@ export default class Game extends Vue {
     });
   }
 
-  private async buyIn(size: number) {
-    if (size <= 0) {
-      this.$plugin.toast('buy in size too small');
+  private async buyIn(
+    buyInSize: number,
+    onSuccess: () => void = () => {
       return;
+    },
+  ) {
+    buyInSize = Number(buyInSize);
+    if (buyInSize <= 0) {
+      this.$plugin.toast('靓仔, 买个鸡春做咩啊');
+    }
+
+    if (this.canBuyInSize === 0 || this.currentBuyInSize + buyInSize > this.limitBuyInSize) {
+      this.$plugin.toast('靓仔, 超过买入限制咯');
     }
 
     try {
-      console.log('come in buyIn ==================', size);
       this.showMsg = true;
-      this.msg = this.hasSit && this.isPlay ? `已补充买入 ${size},下局生效` : `已补充买入 ${size}`;
-      this.emit('buyIn', {
-        buyInSize: size,
-      });
+      this.msg = this.hasSit && this.isPlay ? `已补充买入 ${buyInSize}, 下局生效` : `已补充买入 ${buyInSize}`;
+      this.emit('buyIn', { buyInSize });
+      onSuccess();
     } catch (e) {
-      console.log(e);
+      console.error('buyIn error', e);
     }
   }
   private standUp() {
