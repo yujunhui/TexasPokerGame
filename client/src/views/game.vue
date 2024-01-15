@@ -743,10 +743,12 @@ export default class Game extends Vue {
     buyInSize = Number(buyInSize);
     if (buyInSize <= 0) {
       this.$plugin.toast('靓仔, 买个鸡春做咩啊');
+      return;
     }
 
     if (this.canBuyInSize === 0 || this.currentBuyInSize + buyInSize > this.limitBuyInSize) {
       this.$plugin.toast('靓仔, 超过买入限制咯');
+      return;
     }
 
     try {
