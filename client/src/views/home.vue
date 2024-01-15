@@ -1,6 +1,6 @@
 <template>
   <div class="home-container container">
-    <div class="room-btn" v-show="showBtn">
+    <div class="room-btn" v-show="isHome">
       <div class="room-config" v-show="showRoomConfig">
         <div class="room-config-shadow" @click="showRoomConfig = false"></div>
         <div class="room-config-body">
@@ -27,7 +27,9 @@
         <span>7 day game history</span>
       </div>
     </div>
+
     <div class="room-number" v-show="isJoin">
+      <div class="back-to-home" @click="backToHome">Home</div>
       <div class="room-input inline">
         <div class="input-bd" :class="{ error: isError }">
           <div class="input-name iconfont icon-password" :style="{ minWidth: 0, width: '32px' }"></div>
@@ -37,7 +39,7 @@
         </div>
       </div>
       <div class="room-btn inline">
-        <span @click="go">go</span>
+        <span @click="go">GO</span>
       </div>
 
       <div v-if="rooms.length > 0">
@@ -88,7 +90,7 @@ import { IRoomBasicInfo } from '@/interface/IRoom';
 export default class Home extends Vue {
   public roomNumber: string = '';
   public isJoin = false;
-  public showBtn = true;
+  public isHome = true;
   public isError = false;
   public isShort = false;
   public smallBlind = 1;
@@ -121,7 +123,7 @@ export default class Home extends Vue {
 
   public joinRoom() {
     this.isJoin = true;
-    this.showBtn = false;
+    this.isHome = false;
   }
 
   public async go() {
@@ -151,6 +153,11 @@ export default class Home extends Vue {
     } catch (e) {
       this.$plugin.toast('cannot find the room');
     }
+  }
+
+  public backToHome() {
+    this.isJoin = false;
+    this.isHome = true;
   }
 
   public async selfPast7DayGame() {
@@ -270,9 +277,24 @@ export default class Home extends Vue {
     }
   }
 
+  .back-to-home {
+    background-color: #33cccc;
+    border: solid #33cccc;
+    border-radius: 0 0.5rem 0.5rem 0;
+    display: inline;
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+
   .room-btn {
     max-width: 600px;
     margin: auto;
+
+    span {
+      font-size: 20px;
+      font-weight: bold;
+    }
 
     .btn {
       margin: 30px auto;

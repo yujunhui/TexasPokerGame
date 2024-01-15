@@ -58,14 +58,19 @@
     <notice :message-list="messageList"></notice>
     <div class="game-record iconfont icon-record" @click="getRecord(0)"></div>
     <div class="setting">
-      <div class="iconfont icon-setting setting-btn" @click="showSetting = !showSetting"></div>
-      <div class="setting-body" :class="{ show: showSetting }">
-        <i @click="showBuyInDialog()">buy in</i>
-        <i @click="standUp()">stand Up</i>
-        <i @click="showCounterRecord">counter record</i>
-        <i @click="speakSettings()">speak settings</i>
-        <i @click="closeAudio()">audio ({{ `${audioStatus ? 'open' : 'close'}` }})</i>
-      </div>
+      <div class="shadow" @click="toggleSetting()" v-if="showSetting"></div>
+      <div class="setting-btn" @click="toggleSetting()"></div>
+      <Transition name="setting-fade">
+        <div class="setting-body" v-if="showSetting">
+          <p @click="toggleSetting()" class="setting-close">X</p>
+          <p @click="$router.replace({ name: 'home' })">Home</p>
+          <p @click="showBuyInDialog()">Buy In</p>
+          <p @click="standUp()">Stand Up</p>
+          <p @click="showCounterRecord">Counter Record</p>
+          <p @click="speakSettings()">Speak Settings</p>
+          <p @click="closeAudio()">Audio ({{ audioStatus ? 'On' : 'Off' }})</p>
+        </div>
+      </Transition>
     </div>
     <BuyIn :showBuyIn.sync="showBuyIn" :min="0" :max="canBuyInSize" @buyIn="buyIn"></BuyIn>
     <SpeakSettings :showSpeakSettings.sync="showSpeakSettings"></SpeakSettings>
@@ -770,6 +775,10 @@ export default class Game extends Vue {
     this.showSetting = false;
   }
 
+  public toggleSetting() {
+    this.showSetting = !this.showSetting;
+  }
+
   public play() {
     if (this.players.length >= 2) {
       this.gaming = true;
@@ -936,46 +945,59 @@ export default class Game extends Vue {
     top: 0;
     position: absolute;
 
-    .setting-btn {
-      width: 30px;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      background: #fff;
-      top: 10px;
+    .shadow {
+      position: fixed;
+      z-index: 5;
+      top: 0;
       left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .setting-btn {
       position: absolute;
-      font-size: 20px;
-      color: #898888;
-      border-radius: 0 10px 10px 0;
+      top: 0;
+      left: 0;
+      margin: 10px;
+      background: url('../assets/setting-btn.svg');
+      background-size: 1rem;
+      width: 1rem;
+      height: 1rem;
     }
 
     .setting-body {
-      position: absolute;
-      left: 0;
-      top: 48px;
-      transform: translate3d(-150px, 0px, 0px);
-      z-index: 1;
-      transition: transform 0.5s;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 8;
+      width: 60%;
+      // height: 40%;
+      border-radius: 12px;
+      box-sizing: border-box;
+      background: #fff;
+      padding: 20px;
+      overflow-y: auto;
+      font-weight: bold;
 
-      i {
-        display: block;
-        width: 100px;
-        height: 20px;
-        padding: 4px 8px;
-        font-style: normal;
+      p {
+        padding: 6px;
         text-align: left;
-        line-height: 20px;
-        font-size: 14px;
-        color: #fff;
-        background: rgba(0, 0, 0, 0.6);
-        margin: 1px 0;
-      }
-
-      &.show {
-        transform: translate3d(0, 0, 0);
+        &.setting-close {
+          text-align: right;
+        }
       }
     }
+  }
+
+  .setting-fade-enter-active,
+  .setting-fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .setting-fade-enter,
+  .setting-fade-leave-to {
+    opacity: 0;
   }
 
   .game-record {
