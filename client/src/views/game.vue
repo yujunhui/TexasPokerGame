@@ -727,7 +727,12 @@ export default class Game extends Vue {
     });
   }
 
-  private async buyIn(buyInSize: number, onSuccess: () => void = () => {}) {
+  private async buyIn(
+    buyInSize: number,
+    onSuccess: () => void = () => {
+      return;
+    },
+  ) {
     buyInSize = Number(buyInSize);
     if (buyInSize <= 0) {
       this.$plugin.toast('靓仔, 买个鸡春做咩啊');
