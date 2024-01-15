@@ -51,15 +51,15 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class SpeakSettings extends Vue {
-  @Prop() private showSpeakSettings!: boolean;
-  private voices: SpeechSynthesisVoice[] = [];
-  private selectedVoice: string | null = null;
-  private playReminderSound: boolean = true;
-  private playMessageSound: boolean = true;
-  private playRaiseReminderSound: boolean = true;
-  private isRandomVoice: boolean = false;
+  @Prop() public showSpeakSettings!: boolean;
+  public voices: SpeechSynthesisVoice[] = [];
+  public selectedVoice: string | null = null;
+  public playReminderSound: boolean = true;
+  public playMessageSound: boolean = true;
+  public playRaiseReminderSound: boolean = true;
+  public isRandomVoice: boolean = false;
 
-  private mounted() {
+  public mounted() {
     this.fetchVoices();
     if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = this.fetchVoices;
@@ -68,7 +68,7 @@ export default class SpeakSettings extends Vue {
     this.loadSettings();
   }
 
-  private loadSettings() {
+  public loadSettings() {
     const reminderSetting = localStorage.getItem('playReminderSound');
     const messageSetting = localStorage.getItem('playMessageSound');
     const raiseReminderSetting = localStorage.getItem('playRaiseReminderSound');
@@ -80,18 +80,18 @@ export default class SpeakSettings extends Vue {
     this.isRandomVoice = isRandomVoice !== null ? isRandomVoice === 'true' : false;
   }
 
-  private saveSettings() {
+  public saveSettings() {
     localStorage.setItem('playReminderSound', this.playReminderSound.toString());
     localStorage.setItem('playMessageSound', this.playMessageSound.toString());
     localStorage.setItem('playRaiseReminderSound', this.playRaiseReminderSound.toString());
     localStorage.setItem('tts:isRandomVoice', this.isRandomVoice.toString());
   }
 
-  private fetchVoices() {
+  public fetchVoices() {
     this.voices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.startsWith('zh'));
   }
 
-  private testVoice(voice: SpeechSynthesisVoice) {
+  public testVoice(voice: SpeechSynthesisVoice) {
     const utterance = new SpeechSynthesisUtterance('牌友，你好啊');
     utterance.voice = voice;
     window.speechSynthesis.speak(utterance);
@@ -100,15 +100,15 @@ export default class SpeakSettings extends Vue {
     this.saveSelectedVoice(voice);
   }
 
-  private saveSelectedVoice(voice: SpeechSynthesisVoice) {
+  public saveSelectedVoice(voice: SpeechSynthesisVoice) {
     localStorage.setItem('selectedVoice', voice.name);
   }
 
-  private loadSelectedVoice() {
+  public loadSelectedVoice() {
     this.selectedVoice = localStorage.getItem('selectedVoice');
   }
 
-  private closeSpeakSettings() {
+  public closeSpeakSettings() {
     this.$emit('update:showSpeakSettings', false);
   }
 }

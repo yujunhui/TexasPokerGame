@@ -4,8 +4,8 @@
       <div class="raise-size">
         <div class="not-allin" v-show="showActionBtn('raise')">
           <i v-for="size in moreSizeMap" @click="raiseOrBet(size)" v-show="showActionSize(size)">
-            {{ Math.floor(size) }}</i
-          >
+            {{ Math.floor(size) }}
+          </i>
         </div>
       </div>
       <div class="action-type">
@@ -13,9 +13,9 @@
         <span class="action-btn" @click="action('check')" v-show="showActionBtn('check')">check</span>
         <span class="action-btn" @click="action('call')" v-show="showActionBtn('call')">call</span>
         <span class="action-btn" @click="otherSizeHandle()" v-show="showActionBtn('raise')">more</span>
-        <span class="action-btn action-btn--allin" @dblclick="action('allin')" v-show="!showActionBtn('raise')"
-          >ALLIN</span
-        >
+        <span class="action-btn action-btn--allin" @dblclick="action('allin')" v-show="!showActionBtn('raise')">
+          ALLIN
+        </span>
       </div>
       <div>
         <iAudio :play="playClick && audioStatus" type="click"></iAudio>
@@ -57,25 +57,25 @@ import { IPlayer } from '@/interface/IPlayer';
   },
 })
 export default class Action extends Vue {
-  @Prop() private isAction: boolean = false;
-  @Prop() private minActionSize!: number;
-  @Prop() private pot!: number;
-  @Prop() private prevSize!: number;
-  @Prop() private baseSize!: number;
-  @Prop() private isPreFlop!: boolean;
-  @Prop() private isTwoPlayer!: boolean;
-  @Prop() private currPlayer!: IPlayer;
-  @Prop() private audioStatus?: boolean;
+  @Prop() public isAction: boolean = false;
+  @Prop() public minActionSize!: number;
+  @Prop() public pot!: number;
+  @Prop() public prevSize!: number;
+  @Prop() public baseSize!: number;
+  @Prop() public isPreFlop!: boolean;
+  @Prop() public isTwoPlayer!: boolean;
+  @Prop() public currPlayer!: IPlayer;
+  @Prop() public audioStatus?: boolean;
 
-  private isRaise = false;
-  private moreSize: number = 0;
-  private actioned = false;
-  private playClick = false;
-  private playRaise = false;
-  private playFold = false;
+  public isRaise = false;
+  public moreSize: number = 0;
+  public actioned = false;
+  public playClick = false;
+  public playRaise = false;
+  public playFold = false;
 
   @Watch('isAction')
-  private wAction(val: boolean) {
+  public wAction(val: boolean) {
     this.actioned = !val;
     this.playClick = false;
     this.playRaise = false;
@@ -83,7 +83,7 @@ export default class Action extends Vue {
   }
 
   @Watch('moreSize')
-  private wmoreSize(val: number) {
+  public wmoreSize(val: number) {
     this.moreSize = val > this.currPlayer.counter ? this.currPlayer.counter : val;
   }
 
@@ -101,7 +101,7 @@ export default class Action extends Vue {
     return Number(this.currPlayer && this.currPlayer.counter + this.currPlayer.actionSize);
   }
 
-  private raiseOrBet(size: number) {
+  public raiseOrBet(size: number) {
     const actionSize = Math.floor(size);
     if (this.prevSize <= 0) {
       this.action(`bet:${actionSize}`);
@@ -110,7 +110,7 @@ export default class Action extends Vue {
     }
   }
 
-  private action(command: string) {
+  public action(command: string) {
     if (command.indexOf('raise') > -1 || command === 'allin' || command === 'call') {
       this.playRaise = true;
     }
@@ -125,7 +125,7 @@ export default class Action extends Vue {
     }
   }
 
-  private showActionSize(multiple: number) {
+  public showActionSize(multiple: number) {
     return (
       this.currPlayer &&
       this.currPlayer.counter > Math.floor(multiple) &&
@@ -134,12 +134,12 @@ export default class Action extends Vue {
     );
   }
 
-  private otherSizeHandle() {
+  public otherSizeHandle() {
     this.isRaise = true;
     this.moreSize = this.minActionSize;
   }
 
-  private getActionSize(size: number) {
+  public getActionSize(size: number) {
     if (size > this.minActionSize) {
       this.moreSize = size;
     } else {
@@ -147,7 +147,7 @@ export default class Action extends Vue {
     }
   }
 
-  private addSize() {
+  public addSize() {
     if (this.moreSize === this.currPlayer?.counter) {
       this.action('allin');
     } else if (this.prevSize <= 0) {
@@ -157,7 +157,7 @@ export default class Action extends Vue {
     }
   }
 
-  private showActionBtn(type: string) {
+  public showActionBtn(type: string) {
     // check
     if ('check' === type) {
       return (

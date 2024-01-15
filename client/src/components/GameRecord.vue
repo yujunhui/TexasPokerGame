@@ -3,7 +3,8 @@
     <div class="shadow" @click="show = false"></div>
     <div class="body">
       <div class="title">
-        record <i>({{ gameList[currGameIndex - 1] && gameList[currGameIndex - 1].gameId }})</i>
+        record
+        <i>({{ gameList[currGameIndex - 1] && gameList[currGameIndex - 1].gameId }})</i>
       </div>
       <div class="record-context">
         <ul class="td">
@@ -54,12 +55,12 @@ import { IGameRecord } from '@/interface/IGameRecord';
   },
 })
 export default class Record extends Vue {
-  @Prop() private value!: boolean;
-  @Prop() private gameList!: IGameRecord[];
-  @Prop() private commandList!: IPlayer[];
-  @Prop() private currGameIndex!: number;
+  @Prop() public value!: boolean;
+  @Prop() public gameList!: IGameRecord[];
+  @Prop() public commandList!: IPlayer[];
+  @Prop() public currGameIndex!: number;
 
-  private valueCard = [];
+  public valueCard = [];
 
   get show() {
     return this.value;
@@ -71,14 +72,14 @@ export default class Record extends Vue {
     return this.gameList.length;
   }
 
-  private getRecord(type: number) {
+  public getRecord(type: number) {
     const index = this.currGameIndex + type;
     if (index > this.maxIndex || index <= 0) {
       return;
     }
     this.$emit('getRecord', index);
   }
-  private commonCardMap(commonCard: string) {
+  public commonCardMap(commonCard: string) {
     const commonCardArr = commonCard.split(',');
     const arr = [];
     for (let i = 0; i < 5; i++) {

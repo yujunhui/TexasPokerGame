@@ -15,12 +15,12 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class XInput extends Vue {
-  @Prop({ default: '', type: String }) private value!: string;
-  @Prop({ default: '', type: String }) private text!: string;
-  @Prop({ default: 'text', type: String }) private type!: string;
-  @Prop({ default: false, type: Boolean }) private error!: boolean;
+  @Prop({ default: '', type: String }) public value!: string;
+  @Prop({ default: '', type: String }) public text!: string;
+  @Prop({ default: 'text', type: String }) public type!: string;
+  @Prop({ default: false, type: Boolean }) public error!: boolean;
 
-  private focus = false;
+  public focus = false;
 
   get changeValue() {
     return this.value;
@@ -31,11 +31,11 @@ export default class XInput extends Vue {
     this.$emit('change', val);
   }
 
-  private clear() {
+  public clear() {
     this.$emit('input', '');
   }
 
-  private onFocus() {
+  public onFocus() {
     this.focus = true;
     this.$emit('focus');
   }

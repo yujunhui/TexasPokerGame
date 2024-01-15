@@ -30,7 +30,7 @@
     <div class="room-number" v-show="isJoin">
       <div class="room-input inline">
         <div class="input-bd" :class="{ error: isError }">
-          <div class="input-name iconfont icon-password" :style="{minWidth: 0, width: '32px'}"></div>
+          <div class="input-name iconfont icon-password" :style="{ minWidth: 0, width: '32px' }"></div>
           <div class="input-text">
             <input type="tel" maxlength="6" @focus="isError = false" v-model="roomNumber" />
           </div>
@@ -87,23 +87,23 @@ import { IRoomBasicInfo } from '@/interface/IRoom';
 })
 export default class Home extends Vue {
   public roomNumber: string = '';
-  private isJoin = false;
-  private showBtn = true;
-  private isError = false;
-  private isShort = false;
-  private smallBlind = 1;
-  private showRoomConfig = false;
-  private showRecord = false;
-  private commandList = [];
-  private currGameIndex = 0;
-  private gameList: IGameRecord[] = [];
-  private rooms: IRoomBasicInfo[] = [];
+  public isJoin = false;
+  public showBtn = true;
+  public isError = false;
+  public isShort = false;
+  public smallBlind = 1;
+  public showRoomConfig = false;
+  public showRecord = false;
+  public commandList = [];
+  public currGameIndex = 0;
+  public gameList: IGameRecord[] = [];
+  public rooms: IRoomBasicInfo[] = [];
 
   public async mounted() {
     await this.getRooms();
   }
 
-  private async createRoom() {
+  public async createRoom() {
     try {
       const result = await service.createRoom(this.isShort, this.smallBlind, 0);
       const { roomNumber } = result.data;
@@ -119,12 +119,12 @@ export default class Home extends Vue {
     }
   }
 
-  private joinRoom() {
+  public joinRoom() {
     this.isJoin = true;
     this.showBtn = false;
   }
 
-  private async go() {
+  public async go() {
     if (!/^\d+$/.test(this.roomNumber)) {
       this.isError = true;
       return;
@@ -132,12 +132,12 @@ export default class Home extends Vue {
     await this.goByRoomNumber(this.roomNumber);
   }
 
-  private async goByEvent(event: any) {
+  public async goByEvent(event: any) {
     const roomNumber = event.currentTarget.getAttribute('data-roomNumber');
     await this.goByRoomNumber(roomNumber);
   }
 
-  private async goByRoomNumber(roomNumber: string) {
+  public async goByRoomNumber(roomNumber: string) {
     try {
       const { data } = await service.findRoom(roomNumber);
       if (data) {
@@ -153,7 +153,7 @@ export default class Home extends Vue {
     }
   }
 
-  private async selfPast7DayGame() {
+  public async selfPast7DayGame() {
     try {
       const userIDStr = cookie.get('user_id');
       if (userIDStr) {
@@ -172,7 +172,7 @@ export default class Home extends Vue {
     }
   }
 
-  private async getRecord(index: number) {
+  public async getRecord(index: number) {
     try {
       console.log('ccc');
       let gameId = 0;
@@ -197,7 +197,7 @@ export default class Home extends Vue {
     }
   }
 
-  private async getRooms() {
+  public async getRooms() {
     try {
       const result = await service.getRooms();
       this.rooms = Object.values(result.data);

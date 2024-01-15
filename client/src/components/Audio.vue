@@ -32,10 +32,10 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component
 export default class Audio extends Vue {
-  @Prop() private type!: string;
-  @Prop() private play!: boolean;
+  @Prop() public type!: string;
+  @Prop() public play!: boolean;
   @Watch('play')
-  private wPlay(val: boolean) {
+  public wPlay(val: boolean) {
     if (val) {
       (this.$refs[this.type] as HTMLAudioElement).play();
     }

@@ -12,11 +12,11 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component
 export default class Range extends Vue {
-  @Prop({ type: Number, default: 1000 }) private max!: number;
-  @Prop({ type: Number, default: 100 }) private min!: number;
-  @Prop() private value!: any;
-  @Prop({ type: Boolean, default: false }) private isHorizontal!: boolean;
-  private rangeRound = (this.max - this.min) / 100;
+  @Prop({ type: Number, default: 1000 }) public max!: number;
+  @Prop({ type: Number, default: 100 }) public min!: number;
+  @Prop() public value!: any;
+  @Prop({ type: Boolean, default: false }) public isHorizontal!: boolean;
+  public rangeRound = (this.max - this.min) / 100;
 
   get rangeSize() {
     const valNum = Number(this.value);

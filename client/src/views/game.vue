@@ -282,54 +282,54 @@ export default class Game extends Vue {
   @Ref() public readonly actionNotice!: animation;
   // in the room user
   // have a sit user
-  private players: IPlayer[] = [];
-  private currentRoundActions: ILatestActionData[] = [];
-  private userInfo: any = {};
-  private joinMsg = '';
-  private handCard = [];
-  private commonCard = [];
-  private pot = 0;
-  private slidePots = [];
-  private prevSize = 0;
-  private winner: IPlayer[][] = [];
-  private showBuyIn = false;
-  private showSetting = false;
-  private sitLink: any = '';
-  private gaming = false;
-  private sitList: ISit[] = [];
-  private actionUserId = '';
-  private showAllin = false;
-  private showMsg = false;
-  private playIncome = false;
-  private msg = '';
-  private time = ACTION_TIME;
-  private timeSt = 0;
-  private commandRecordList = [];
-  private actionEndTime = 0;
-  private showCommandRecord = false;
-  private gameList: IGameRecord[] = [];
-  private currGameIndex = 0;
-  private audioStatus = true;
-  private roomConfig: IRoom = {
+  public players: IPlayer[] = [];
+  public currentRoundActions: ILatestActionData[] = [];
+  public userInfo: any = {};
+  public joinMsg = '';
+  public handCard = [];
+  public commonCard = [];
+  public pot = 0;
+  public slidePots = [];
+  public prevSize = 0;
+  public winner: IPlayer[][] = [];
+  public showBuyIn = false;
+  public showSetting = false;
+  public sitLink: any = '';
+  public gaming = false;
+  public sitList: ISit[] = [];
+  public actionUserId = '';
+  public showAllin = false;
+  public showMsg = false;
+  public playIncome = false;
+  public msg = '';
+  public time = ACTION_TIME;
+  public timeSt = 0;
+  public commandRecordList = [];
+  public actionEndTime = 0;
+  public showCommandRecord = false;
+  public gameList: IGameRecord[] = [];
+  public currGameIndex = 0;
+  public audioStatus = true;
+  public roomConfig: IRoom = {
     isShort: false,
     smallBlind: 1,
   };
-  private messageList: any[] = [];
-  private showRecord = false;
-  private playRaiseNotice = false;
-  private playAllInNotice = false;
-  private playersStatus: IPlayersStatus = {};
-  private showSpeakSettings = false;
+  public messageList: any[] = [];
+  public showRecord = false;
+  public playRaiseNotice = false;
+  public playAllInNotice = false;
+  public playersStatus: IPlayersStatus = {};
+  public showSpeakSettings = false;
 
   @Watch('latestSpecialAction')
-  private privateActionNoticeChange(newValue: ILatestActionData, oldValue: ILatestActionData) {
+  public privateActionNoticeChange(newValue: ILatestActionData, oldValue: ILatestActionData) {
     if (newValue?.nickName !== oldValue?.nickName) {
       this.actionNotice?.applyAnimation();
     }
   }
 
   @Watch('players')
-  private playerChange(players: IPlayer[]) {
+  public playerChange(players: IPlayer[]) {
     console.log('player change-------');
     this.sitList = this.sitList.map((sit: ISit) => {
       const player = players.find((p) => sit.player && p.userId === sit.player.userId && sit.player.counter > 0);
@@ -339,30 +339,30 @@ export default class Game extends Vue {
   }
 
   @Watch('isPlay')
-  private isPlayChange(val: boolean) {
+  public isPlayChange(val: boolean) {
     if (val) {
       clearTimeout(this.timeSt);
       this.doCountDown();
     }
   }
 
-  private playReminderSound() {
+  public playReminderSound() {
     const reminderSetting = localStorage.getItem('playReminderSound');
     return reminderSetting !== null ? reminderSetting === 'true' : true;
   }
 
-  private playMessageSound() {
+  public playMessageSound() {
     const messageSetting = localStorage.getItem('playMessageSound');
     return messageSetting !== null ? messageSetting === 'true' : true;
   }
 
-  private playRaiseReminderSound() {
+  public playRaiseReminderSound() {
     const raiseReminderSetting = localStorage.getItem('playRaiseReminderSound');
     return raiseReminderSetting !== null ? raiseReminderSetting === 'true' : true;
   }
 
   @Watch('actionUserId')
-  private actionUserIdChange() {
+  public actionUserIdChange() {
     // Reminder for Raise and Allin
     if (this.audioStatus && this.isAction && this.playRaiseReminderSound()) {
       const latestSpecialAction = this.latestSpecialAction;
@@ -390,7 +390,7 @@ export default class Game extends Vue {
     }
   }
 
-  private init() {
+  public init() {
     this.joinMsg = '';
     this.handCard = [];
     this.commonCard = [];
@@ -403,16 +403,16 @@ export default class Game extends Vue {
     this.initSitLink();
   }
 
-  private getSocketServerUrl() {
+  public getSocketServerUrl() {
     return `${origin.urls[0]}/socket`;
   }
 
-  private sendMsgHandle(msgInfo: string) {
+  public sendMsgHandle(msgInfo: string) {
     const msg = `${this.userInfo.nickName}:${msgInfo}`;
     this.emit('broadcast', { msg });
   }
 
-  private sendAudio(audioData: any) {
+  public sendAudio(audioData: any) {
     this.emit('broadcast', {
       type: 'audio',
       audioData,
@@ -420,12 +420,12 @@ export default class Game extends Vue {
     });
   }
 
-  private showCounterRecord() {
+  public showCounterRecord() {
     this.showRecord = true;
     this.showSetting = false;
   }
 
-  private doCountDown() {
+  public doCountDown() {
     if (this.time <= 0) {
       clearTimeout(this.timeSt);
       return;
@@ -437,7 +437,7 @@ export default class Game extends Vue {
     }, 1000);
   }
 
-  private speakText(textToSpeak: string) {
+  public speakText(textToSpeak: string) {
     const isRandomVoice = localStorage.getItem('tts:isRandomVoice');
 
     let voice: SpeechSynthesisVoice;
@@ -470,7 +470,7 @@ export default class Game extends Vue {
     window.speechSynthesis.speak(utterance);
   }
 
-  private PokeStyle(cards: string[]) {
+  public PokeStyle(cards: string[]) {
     if (this.commonCard.length === 0 || !cards) {
       return '';
     }
@@ -480,12 +480,12 @@ export default class Game extends Vue {
     return style.getPokerStyleName();
   }
 
-  private showBuyInDialog() {
+  public showBuyInDialog() {
     this.showBuyIn = true;
     this.showSetting = false;
   }
 
-  private sitListMap() {
+  public sitListMap() {
     let node = this.sitLink;
     const sit = [];
     for (let i = 0; i < 10; i++) {
@@ -495,15 +495,15 @@ export default class Game extends Vue {
     return sit;
   }
 
-  private sitDown() {
+  public sitDown() {
     this.emit('sitDown', { sitList: this.sitListMap() });
   }
 
-  private delay() {
+  public delay() {
     this.emit('delayTime');
   }
 
-  private action(command: string) {
+  public action(command: string) {
     if (command === 'fold') {
       clearTimeout(this.timeSt);
     }
@@ -518,7 +518,7 @@ export default class Game extends Vue {
     // this.isRaise = false;
   }
 
-  private socketInit() {
+  public socketInit() {
     const token = cookie.get('token') || localStorage.getItem('token') || '';
     const roomConfig = this.getRoomConfig();
     const log = console.log;
@@ -727,7 +727,7 @@ export default class Game extends Vue {
     });
   }
 
-  private async buyIn(
+  public async buyIn(
     buyInSize: number,
     onSuccess: () => void = () => {
       return;
@@ -751,7 +751,7 @@ export default class Game extends Vue {
       console.error('buyIn error', e);
     }
   }
-  private standUp() {
+  public standUp() {
     // player in the game
     if (this.currPlayer && this.currPlayer.status === 1) {
       this.$plugin.toast('sorry, please fold you hand!');
@@ -761,16 +761,16 @@ export default class Game extends Vue {
     this.showSetting = false;
   }
 
-  private closeAudio() {
+  public closeAudio() {
     this.audioStatus = !this.audioStatus;
   }
 
-  private speakSettings() {
+  public speakSettings() {
     this.showSpeakSettings = true;
     this.showSetting = false;
   }
 
-  private play() {
+  public play() {
     if (this.players.length >= 2) {
       this.gaming = true;
       this.emit('playGame');
@@ -779,7 +779,7 @@ export default class Game extends Vue {
     }
   }
 
-  private emit(eventType: string, data: any = {}) {
+  public emit(eventType: string, data: any = {}) {
     this.socket.emit(eventType, {
       target: '',
       payload: {
@@ -788,7 +788,7 @@ export default class Game extends Vue {
     });
   }
 
-  private initSitLink() {
+  public initSitLink() {
     const sitListMap = this.sitList || [];
     if (sitListMap.length === 0) {
       for (let i = 0; i < 10; i++) {
@@ -811,7 +811,7 @@ export default class Game extends Vue {
     this.sitLink = link;
   }
 
-  private async getRecord(index: number) {
+  public async getRecord(index: number) {
     try {
       let gameId = 0;
       if (!index) {
@@ -835,7 +835,7 @@ export default class Game extends Vue {
     }
   }
 
-  private getRoomConfig() {
+  public getRoomConfig() {
     return cookie.get('roomConfig') || localStorage.getItem('roomConfig') || '';
   }
 
@@ -843,7 +843,7 @@ export default class Game extends Vue {
    * 自动加入房间
    * - 会覆盖掉已经加入的房间的配置
    */
-  private async autoJoinRoom() {
+  public async autoJoinRoom() {
     try {
       const { data } = await service.findRoom(this.roomId);
       cookie.set('roomConfig', data, { expires: 1 });
@@ -853,7 +853,7 @@ export default class Game extends Vue {
     }
   }
 
-  private async created() {
+  public async created() {
     try {
       await this.autoJoinRoom();
       this.socketInit();

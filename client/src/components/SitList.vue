@@ -16,8 +16,9 @@
             <span
               v-show="playersStatus[sit.player.userId] && playersStatus[sit.player.userId].speaking"
               class="speaking-icon"
-              >🎙️</span
             >
+              🎙️
+            </span>
             <div
               class="counter"
               :class="{
@@ -101,30 +102,30 @@ import { IRoom } from '@/interface/IRoom';
   },
 })
 export default class SitList extends Vue {
-  @Prop() private msg!: string;
-  @Prop() private currPlayer!: IPlayer;
-  @Prop() private commonCard!: string[];
-  @Prop() private sitLink!: ILinkNode<ISit>;
-  @Prop() private handCard!: string[];
-  @Prop() private winner!: IPlayer[][];
-  @Prop() private isPlay!: boolean;
-  @Prop() private roomConfig!: IRoom;
-  @Prop() private actionUserId!: string;
-  @Prop() private valueCards!: string;
-  @Prop({ default: 30, type: Number }) private time!: number;
-  @Prop() private playersStatus!: IPlayersStatus;
-  @Prop() private maxBuyInSize!: number;
+  @Prop() public msg!: string;
+  @Prop() public currPlayer!: IPlayer;
+  @Prop() public commonCard!: string[];
+  @Prop() public sitLink!: ILinkNode<ISit>;
+  @Prop() public handCard!: string[];
+  @Prop() public winner!: IPlayer[][];
+  @Prop() public isPlay!: boolean;
+  @Prop() public roomConfig!: IRoom;
+  @Prop() public actionUserId!: string;
+  @Prop() public valueCards!: string;
+  @Prop({ default: 30, type: Number }) public time!: number;
+  @Prop() public playersStatus!: IPlayersStatus;
+  @Prop() public maxBuyInSize!: number;
 
-  private sitLinkNode: any = '';
-  private showBuyIn = false;
-  private currSit!: ISit;
+  public sitLinkNode: any = '';
+  public showBuyIn = false;
+  public currSit!: ISit;
 
   @Watch('sitLink')
-  private getSit(val: ILinkNode<ISit>) {
+  public getSit(val: ILinkNode<ISit>) {
     this.sitLinkNode = val;
   }
 
-  private buyIn(size: number) {
+  public buyIn(size: number) {
     this.showBuyIn = false;
     this.$emit('buyIn', Number(size), () => {
       this.currPlayer.counter += Number(size);
@@ -132,11 +133,11 @@ export default class SitList extends Vue {
     });
   }
 
-  private showHandCard(sit: ISit) {
+  public showHandCard(sit: ISit) {
     return sit.player?.userId === this.currPlayer?.userId;
   }
 
-  private PokeStyle(cards: string[]) {
+  public PokeStyle(cards: string[]) {
     if (this.commonCard.length === 0) {
       return '';
     }
@@ -199,18 +200,18 @@ export default class SitList extends Vue {
     return null;
   }
 
-  private mapCard(cards: string[]) {
+  public mapCard(cards: string[]) {
     return map(cards);
   }
 
-  private delayTime() {
+  public delayTime() {
     if (this.currPlayer.delayCount > 0) {
       // this.$emit('update:time', this.time  + 60);
       this.$emit('delay');
     }
   }
 
-  private sitDown(sit: ISit) {
+  public sitDown(sit: ISit) {
     if (!sit.player && (!this.isPlay || !this.hasSit)) {
       if (this.currPlayer.counter <= 0) {
         this.showBuyIn = true;
@@ -266,7 +267,7 @@ export default class SitList extends Vue {
     return [];
   }
 
-  private mounted() {
+  public mounted() {
     this.sitLinkNode = this.sitLink;
   }
 }

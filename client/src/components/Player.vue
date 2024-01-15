@@ -40,10 +40,10 @@ import { PokerStyle } from '@/utils/PokerStyle';
   },
 })
 export default class Player extends Vue {
-  @Prop() private player!: any;
-  @Prop() private isSmall!: boolean;
+  @Prop() public player!: any;
+  @Prop() public isSmall!: boolean;
 
-  private PokeStyle(cards: string, commonCard: string) {
+  public PokeStyle(cards: string, commonCard: string) {
     if (commonCard === '' || cards === '') {
       return '';
     }

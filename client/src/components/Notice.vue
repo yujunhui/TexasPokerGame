@@ -1,9 +1,13 @@
 <template>
   <div class="notice-container">
     <div class="notice-body">
-      <i v-for="message in messageList" v-if="message !== ''" :style="{ top: `${message.top}vh`, animationDuration: `${duration}s` }">{{
-        message.message
-      }}</i>
+      <i
+        v-for="message in messageList"
+        v-if="message !== ''"
+        :style="{ top: `${message.top}vh`, animationDuration: `${duration}s` }"
+      >
+        {{ message.message }}
+      </i>
     </div>
   </div>
 </template>
@@ -13,22 +17,20 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Notice extends Vue {
-  @Prop() private messageList!: any[];
-  private duration = 8;
+  @Prop() public messageList!: any[];
+  public duration = 8;
 
-  private resetDuration() {
+  public resetDuration() {
     const pageWidth = document.documentElement.clientWidth;
-    this.duration = pageWidth > 800
-      ? Math.round(pageWidth / 375 * 4)
-      : Math.round(pageWidth / 375 * 8);
+    this.duration = pageWidth > 800 ? Math.round((pageWidth / 375) * 4) : Math.round((pageWidth / 375) * 8);
   }
 
-  private mounted() {
+  public mounted() {
     this.resetDuration();
     window.addEventListener('resize', this.resetDuration);
   }
 
-  private beforeDestroy() {
+  public beforeDestroy() {
     window.removeEventListener('resize', this.resetDuration);
   }
 }

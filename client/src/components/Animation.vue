@@ -10,9 +10,9 @@ import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 @Component
 export default class Animation extends Vue {
   public expose = ['applyAnimation'];
-  @Prop() private animationName!: string;
+  @Prop() public animationName!: string;
 
-  private classNames = '';
+  public classNames = '';
 
   public applyAnimation() {
     this.classNames = '';
@@ -24,11 +24,11 @@ export default class Animation extends Vue {
   }
 
   @Watch('animationName')
-  private watchAnimationName() {
+  public watchAnimationName() {
     this.applyAnimation();
   }
 
-  private mounted() {
+  public mounted() {
     this.applyAnimation();
   }
 }

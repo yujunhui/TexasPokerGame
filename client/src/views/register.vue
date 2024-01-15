@@ -57,15 +57,15 @@ import XInput from '../components/XInput.vue';
   },
 })
 export default class Register extends Vue {
-  private form: any = {
+  public form: any = {
     userAccount: '',
     nickName: '',
     password: '',
     confirm: '',
   };
-  private errorData: string[] = [];
+  public errorData: string[] = [];
 
-  private valid() {
+  public valid() {
     const errorArr: string[] = [];
     for (const formKey in this.form) {
       if (this.form[formKey] === '') {
@@ -80,14 +80,14 @@ export default class Register extends Vue {
     this.errorData = errorArr;
   }
 
-  private removeValid(validName: string) {
+  public removeValid(validName: string) {
     this.errorData = this.errorData
       .join(',')
       .replace(validName, '')
       .split(',');
   }
 
-  private async register() {
+  public async register() {
     try {
       this.valid();
       if (this.errorData.join('') === '') {
