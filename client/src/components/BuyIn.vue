@@ -3,7 +3,10 @@
     <div class="shadow" @click="closeBuyIn"></div>
     <div class="buy-in-body">
       <div class="input-bd">
-        <div class="input-name"><span>buy in: </span><input type="number" v-model="buyInSize" /></div>
+        <div class="input-name">
+          <span>buy in:</span>
+          <input type="number" v-model="buyInSize" />
+        </div>
         <range :max="max" :min="min" v-model="buyInSize" @change="getBuyInSize"></range>
       </div>
       <div class="btn"><span @click="buyIn">buy in</span></div>
@@ -21,30 +24,30 @@ import range from './Range.vue';
   },
 })
 export default class BuyIn extends Vue {
-  @Prop() private showBuyIn!: boolean;
-  @Prop() private min!: number;
-  @Prop() private max!: number;
-  private buyInSize: number = 0;
+  @Prop() public showBuyIn!: boolean;
+  @Prop() public min!: number;
+  @Prop() public max!: number;
+  public buyInSize: number = 0;
 
   @Watch('buyInSize')
-  private wBuyInSize(val: number) {
+  public wBuyInSize(val: number) {
     this.buyInSize = val > this.max ? this.max : val < this.min ? this.min : val;
   }
 
-  private getBuyInSize(val: string) {
+  public getBuyInSize(val: string) {
     this.buyInSize = Number(val);
   }
 
-  private closeBuyIn() {
+  public closeBuyIn() {
     this.$emit('update:showBuyIn', false);
   }
 
-  private async buyIn() {
+  public async buyIn() {
     this.closeBuyIn();
     this.$emit('buyIn', Number(this.buyInSize));
     this.buyInSize = this.min;
   }
-  private mounted() {
+  public mounted() {
     this.buyInSize = this.min;
   }
 }

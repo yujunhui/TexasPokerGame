@@ -7,8 +7,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Emoji extends Vue {
-  @Prop() private type!: string;
-  @Prop() private show!: boolean;
+  @Prop() public type!: string;
+  @Prop() public show!: boolean;
 }
 </script>
 

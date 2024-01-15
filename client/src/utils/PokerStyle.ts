@@ -48,17 +48,17 @@ enum ShortPokerStyleEnum {
 }
 
 export class PokerStyle implements IPokerStyle {
-  private readonly cards: string[] = [];
-  private readonly isShort: boolean;
-  private flushObj: { [key: string]: any } = {
+  public readonly cards: string[] = [];
+  public readonly isShort: boolean;
+  public flushObj: { [key: string]: any } = {
     1: [],
     2: [],
     3: [],
     4: [],
   };
-  private flushColor: string = '';
-  private straightArr: string[] = [];
-  private styleName = [
+  public flushColor: string = '';
+  public straightArr: string[] = [];
+  public styleName = [
     'ROYAL_FlUSH',
     'STRAIGHT_FLUSH',
     'FOUR_KIND',
@@ -70,8 +70,8 @@ export class PokerStyle implements IPokerStyle {
     'PAIR',
     'HIGH_CARD',
   ];
-  private pokerStyle: string[] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
-  private numObj: Map<string, number> = new Map(POKER_STR.split('').map((m) => [m, 0]));
+  public pokerStyle: string[] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
+  public numObj: Map<string, number> = new Map(POKER_STR.split('').map((m) => [m, 0]));
 
   constructor(cards: string[], isShort = false) {
     this.cards = sort(cards);

@@ -27,14 +27,14 @@ import cardStyle from '@/components/CardStyle.vue';
   },
 })
 export default class Card extends Vue {
-  @Prop() private cardList: any;
-  @Prop({ default: () => [], type: Array }) private valueCards!: string[];
+  @Prop() public cardList: any;
+  @Prop({ default: () => [], type: Array }) public valueCards!: string[];
 
   get show() {
     return this.cardList.length !== 0;
   }
 
-  private getColor(type: string) {
+  public getColor(type: string) {
     switch (type) {
       case 'h':
         return { red: true };
@@ -47,11 +47,11 @@ export default class Card extends Vue {
     }
   }
 
-  private map(card: string) {
+  public map(card: string) {
     return mapCard(card);
   }
 
-  private shadow(card: string) {
+  public shadow(card: string) {
     if (this.valueCards.length === 0 || card === '') {
       return false;
     }

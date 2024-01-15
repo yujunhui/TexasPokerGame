@@ -4,14 +4,14 @@
     <div class="send-msg-body">
       <div class="msg-name iconfont icon-msg" @click="showMsgList = !showMsgList"></div>
       <div class="msg-input">
-        <input type="text" @keyup.13="send" v-model="msg" @focus="onFocus"/>
+        <input type="text" @keyup.13="send" v-model="msg" @focus="onFocus" />
         <ul class="presets" :class="{ show: showPresets }" ref="presetsContainer">
           <li v-for="(item, index) in presets" :key="index">
             <div class="preset-content" @click="sendPreset(item)">{{ item }}</div>
             <button class="btn-remove-preset" @click="removePreset(index)">×</button>
           </li>
           <li class="custom-preset">
-            <input v-model="customPreset" @keyup.13="addPreset"/>
+            <input v-model="customPreset" @keyup.13="addPreset" />
             <button class="btn-add-preset" @click="addPreset">+</button>
           </li>
         </ul>
@@ -36,13 +36,13 @@ const PRESET_STORE_KEY = 'msg-presets';
   },
 })
 export default class SendMsg extends Vue {
-  private msg: string = '';
-  private showMsgList: boolean = false;
-  private showPresets: boolean = false;
-  private customPreset: string = '';
-  private presets: string[] = [];
-  @Prop({ type: Number, default: 1000 }) private max!: number;
-  @Prop() private msgList!: string[];
+  public msg: string = '';
+  public showMsgList: boolean = false;
+  public showPresets: boolean = false;
+  public customPreset: string = '';
+  public presets: string[] = [];
+  @Prop({ type: Number, default: 1000 }) public max!: number;
+  @Prop() public msgList!: string[];
 
   public mounted() {
     this.presets = this.getPresets();
@@ -53,7 +53,7 @@ export default class SendMsg extends Vue {
     document.removeEventListener('click', this.documentClickHandler);
   }
 
-  private getPresets() {
+  public getPresets() {
     let items = JSON.parse(localStorage.getItem(PRESET_STORE_KEY) || 'null');
 
     if (!items) {
@@ -77,7 +77,7 @@ export default class SendMsg extends Vue {
     return items;
   }
 
-  private send() {
+  public send() {
     if (this.msg !== '') {
       this.$emit('send', this.msg);
       this.msg = '';
@@ -85,21 +85,21 @@ export default class SendMsg extends Vue {
     }
   }
 
-  private sendAudio(audioData: any) {
+  public sendAudio(audioData: any) {
     this.$emit('sendAudio', audioData);
   }
 
-  private sendPreset(msg: string) {
+  public sendPreset(msg: string) {
     this.$emit('send', msg);
     this.showPresets = false;
   }
 
-  private onFocus() {
+  public onFocus() {
     this.showPresets = true;
     this.scrollPresetsToBottom();
   }
 
-  private addPreset() {
+  public addPreset() {
     if (this.customPreset) {
       this.presets = [...this.presets, this.customPreset];
       this.savePresets();
@@ -110,38 +110,32 @@ export default class SendMsg extends Vue {
     }
   }
 
-  private removePreset(index: number) {
+  public removePreset(index: number) {
     this.confirm({
       message: '是否删除?',
       callback: (yes) => {
         if (yes) {
-          this.presets = this.presets.filter((_, idx) => idx !== index );
+          this.presets = this.presets.filter((_, idx) => idx !== index);
           this.savePresets();
         }
       },
     });
   }
 
-  private savePresets(presets?: string[]) {
+  public savePresets(presets?: string[]) {
     localStorage.setItem(PRESET_STORE_KEY, JSON.stringify(presets || this.presets));
   }
 
-  private scrollPresetsToBottom() {
+  public scrollPresetsToBottom() {
     const presetsContainer = this.$refs.presetsContainer as HTMLUListElement;
     presetsContainer.scrollTo(0, presetsContainer.scrollHeight);
   }
 
-  private documentClickHandler() {
+  public documentClickHandler() {
     this.showPresets = false;
   }
 
-  private confirm({
-    message,
-    callback,
-  }: {
-    message: string,
-    callback: (confirm: boolean) => void,
-  }) {
+  public confirm({ message, callback }: { message: string; callback: (confirm: boolean) => void }) {
     const modal = document.createElement('div');
     Object.assign(modal.style, {
       position: 'fixed',
@@ -165,10 +159,10 @@ export default class SendMsg extends Vue {
       e.preventDefault();
       e.stopPropagation();
       const target = e.target as HTMLDivElement;
-      if (target?.matches('[data-action=\'cancel\']')) {
+      if (target?.matches(`[data-action='cancel']`)) {
         modal.remove();
         callback(false);
-      } else if (target?.matches('[data-action=\'confirm\']')) {
+      } else if (target?.matches(`[data-action='confirm']`)) {
         modal.remove();
         callback(true);
       }

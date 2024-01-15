@@ -9,5 +9,7 @@
   "object-curly-spacing": true,
   "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+  "htmlWhitespaceSensitivity": "ignore",
+  "parser": "vue"
 }

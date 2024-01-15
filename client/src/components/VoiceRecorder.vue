@@ -18,8 +18,8 @@ import 'recorder-core/src/extensions/waveview';
 @Component
 export default class Voice extends Vue {
   public isSupported = Recorder.Support();
-  private mediaRecorder!: ReturnType<typeof Recorder> | null;
-  private isRecording = false;
+  public mediaRecorder!: ReturnType<typeof Recorder> | null;
+  public isRecording = false;
 
   public stop() {
     this.mediaRecorder?.stop((blob: Blob, duration: number) => {
@@ -34,7 +34,7 @@ export default class Voice extends Vue {
     this.isRecording = false;
   }
 
-  private onStart() {
+  public onStart() {
     if (this.isRecording) {
       return;
     }
@@ -45,20 +45,23 @@ export default class Voice extends Vue {
       sampleRate: 16000,
     });
 
-    mediaRecorder.open(() => {
-      this.isRecording = true;
-      mediaRecorder.start();
-      document.addEventListener('touchcancel', this.stop);
-      document.addEventListener('touchend', this.stop);
-      document.addEventListener('mouseup', this.stop);
-    }, (errMsg: string, isUserNotAllow: boolean) => {
-      console.log('open recorder error: ', errMsg, isUserNotAllow && 'user not allow');
-    });
+    mediaRecorder.open(
+      () => {
+        this.isRecording = true;
+        mediaRecorder.start();
+        document.addEventListener('touchcancel', this.stop);
+        document.addEventListener('touchend', this.stop);
+        document.addEventListener('mouseup', this.stop);
+      },
+      (errMsg: string, isUserNotAllow: boolean) => {
+        console.log('open recorder error: ', errMsg, isUserNotAllow && 'user not allow');
+      },
+    );
 
     this.mediaRecorder = mediaRecorder;
   }
 
-  private beforeDestroy() {
+  public beforeDestroy() {
     this.mediaRecorder?.close();
     this.mediaRecorder = null;
     document.removeEventListener('touchcancel', this.stop);

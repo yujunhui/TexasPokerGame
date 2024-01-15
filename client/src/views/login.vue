@@ -32,12 +32,12 @@ export default class Login extends Vue {
   public userAccount: string = '';
   public password: string = '';
 
-  private signUp() {
+  public signUp() {
     this.$router.replace({ name: 'register' });
     return;
   }
 
-  private async login() {
+  public async login() {
     try {
       const result = await service.login(this.userAccount, this.password);
       const { token } = result.data;

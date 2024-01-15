@@ -11,11 +11,11 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Toast extends Vue {
-  @Prop() private text!: string;
-  @Prop({ default: false, type: Boolean }) private show!: boolean;
-  @Prop({ default: 3000, type: Number }) private timeOut!: number;
+  @Prop() public text!: string;
+  @Prop({ default: false, type: Boolean }) public show!: boolean;
+  @Prop({ default: 3000, type: Number }) public timeOut!: number;
 
-  private Time: any;
+  public Time: any;
 
   get showValue() {
     console.log('come in1111', this.show);
@@ -29,7 +29,7 @@ export default class Toast extends Vue {
     this.$emit('update:show', val);
   }
 
-  private close() {
+  public close() {
     console.log('come in');
     clearTimeout(this.Time);
     this.Time = setTimeout(() => {

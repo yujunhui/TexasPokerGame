@@ -9,7 +9,7 @@
     <p>{{ message }}</p>
   </div>
 </template>
-  
+
 <script lang="ts">
 export default {
   name: 'Loader',
@@ -19,7 +19,7 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 p {
   font-size: 0.8em;

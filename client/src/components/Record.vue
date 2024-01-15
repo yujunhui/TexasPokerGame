@@ -35,8 +35,8 @@ import { IPlayer } from '@/interface/IPlayer';
   components: {},
 })
 export default class Record extends Vue {
-  @Prop() private value!: boolean;
-  @Prop() private players!: IPlayer[];
+  @Prop() public value!: boolean;
+  @Prop() public players!: IPlayer[];
 
   get show() {
     return this.value;

@@ -16,8 +16,8 @@ import cardList from './CardList.vue';
   },
 })
 export default class CommonCard extends Vue {
-  @Prop() private commonCard: any;
-  @Prop() private valueCards!: string[];
+  @Prop() public commonCard: any;
+  @Prop() public valueCards!: string[];
 
   get commonCardMap() {
     const arr = [];

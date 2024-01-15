@@ -11,8 +11,8 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 @Component
 export default class MsgList extends Vue {
-  @Prop() private msgList!: string[];
-  @Prop({ type: Boolean, default: false }) private show!: boolean;
+  @Prop() public msgList!: string[];
+  @Prop({ type: Boolean, default: false }) public show!: boolean;
 }
 </script>
 <style lang="less" rel="stylesheet/less">
