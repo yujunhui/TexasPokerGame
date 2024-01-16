@@ -10,6 +10,5 @@
   "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "htmlWhitespaceSensitivity": "ignore",
-  "parser": "vue"
+  "htmlWhitespaceSensitivity": "ignore"
 }
