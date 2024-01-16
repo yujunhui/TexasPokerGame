@@ -1,6 +1,6 @@
 import { Context } from '@midwayjs/web';
 import { ITickMsg } from '../../../interface/ITickMsg';
-import { P2PAction, VersionKey } from '../../../utils/constant';
+import { P2PAction } from '../../../utils/constant';
 
 export default () => {
   return async (ctx: Context, next: () => Promise<any>) => {
@@ -22,7 +22,7 @@ export default () => {
     }
 
     try {
-      if (key !== VersionKey) {
+      if (key !== 'IDENTIFY_VERSION_KEY') {
         tick(id, P2PAction.UpgradeClient, { type: 'error', message: 'need to upgrade the client' }, nsp, socket);
         return;
       }

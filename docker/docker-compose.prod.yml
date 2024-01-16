@@ -1,7 +1,6 @@
 version: "2"
 
-
-services: 
+services:
   mysql:
     container_name: "dzp-mysql"
     platform: linux/x86_64
@@ -20,7 +19,7 @@ services:
       - ../database/poker.sql:/docker-entrypoint-initdb.d/99.poker.sql
     networks:
       - app-network
-  
+
   redis:
     container_name: "dzp-redis"
     image: redis
@@ -40,6 +39,7 @@ services:
         NODE_ENV: production
         VUE_APP_API_IP: adli.asuscomm.com
         VUE_APP_API_PORT: 1111
+        IDENTIFY_VERSION_KEY: ${IDENTIFY_VERSION_KEY}
     container_name: "dzp-nginx"
     restart: always
     ports:
@@ -50,13 +50,14 @@ services:
       - ./config/nginx/htpasswd:/etc/nginx/htpasswd
     networks:
       - app-network
-  
+
   api:
     image: dzp-api:latest
     build:
       context: ../server
       args:
         NODE_ENV: production
+        IDENTIFY_VERSION_KEY: ${IDENTIFY_VERSION_KEY}
     container_name: "dzp-api"
     restart: always
     environment:
@@ -72,4 +73,3 @@ services:
 networks:
   app-network:
     driver: bridge
-

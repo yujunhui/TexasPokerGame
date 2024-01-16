@@ -34,5 +34,3 @@ export enum P2PAction {
 }
 
 export type Action = OnlineAction | P2PAction;
-
-export const VersionKey = 'Landlady8221';
