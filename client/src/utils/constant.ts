@@ -30,7 +30,9 @@ export enum P2PAction {
   SitList = 'sitList',
   GameInfo = 'gameInfo',
   Deny = 'deny',
+  UpgradeClient = 'upgradeClient',
 }
 
 export type Action = OnlineAction | P2PAction;
 export const MaxBuyInFactor = 200;
+export const VersionKey = 'Landlady8221';

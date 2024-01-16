@@ -119,7 +119,7 @@ import service from '../service';
 import gameRecord from '@/components/GameRecord.vue';
 import Loader from '@/components/Loader.vue';
 import { IGameRecord } from '@/interface/IGameRecord';
-import { Online, OnlineAction, P2PAction, MaxBuyInFactor } from '@/utils/constant';
+import { Online, OnlineAction, P2PAction, MaxBuyInFactor, VersionKey } from '@/utils/constant';
 import { Howl } from 'howler';
 
 export enum ECommand {
@@ -537,6 +537,7 @@ export default class Game extends Vue {
         room: this.roomId,
         token,
         roomConfig,
+        key: VersionKey,
       },
       transports: ['websocket'],
     });
@@ -579,6 +580,13 @@ export default class Game extends Vue {
           this.$plugin.toast('room is close');
           setTimeout(() => {
             this.$router.replace({ name: 'home' });
+          }, 1000);
+        }
+
+        if (data.action === P2PAction.UpgradeClient) {
+          this.$plugin.toast('need to upgrade the client');
+          setTimeout(() => {
+            location.reload();
           }, 1000);
         }
       });
@@ -718,7 +726,7 @@ export default class Game extends Vue {
 
     // 系统事件
     this.socket.on('disconnect', (msg: IMsg) => {
-      this.$plugin.toast('room is disconnect');
+      // this.$plugin.toast('room is disconnect');
       // this.socketInit();
       log('#disconnect', msg);
     });
