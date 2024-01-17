@@ -119,7 +119,7 @@ import service from '../service';
 import gameRecord from '@/components/GameRecord.vue';
 import Loader from '@/components/Loader.vue';
 import { IGameRecord } from '@/interface/IGameRecord';
-import { Online, OnlineAction, P2PAction, MaxBuyInFactor, VersionKey } from '@/utils/constant';
+import { Online, OnlineAction, P2PAction, MaxBuyInFactor } from '@/utils/constant';
 import { Howl } from 'howler';
 
 export enum ECommand {
@@ -537,7 +537,7 @@ export default class Game extends Vue {
         room: this.roomId,
         token,
         roomConfig,
-        key: VersionKey,
+        key: 'IDENTIFY_VERSION_KEY',
       },
       transports: ['websocket'],
     });

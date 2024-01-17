@@ -11,6 +11,8 @@ COPY . .
 ARG NODE_ENV
 ARG VUE_APP_API_IP
 ARG VUE_APP_API_PORT
+ARG IDENTIFY_VERSION_KEY
+RUN sed -i "s/IDENTIFY_VERSION_KEY/${IDENTIFY_VERSION_KEY:=tiger}/g" /app/src/views/game.vue
 RUN yarn build
 
 FROM nginx:1.24.0-alpine

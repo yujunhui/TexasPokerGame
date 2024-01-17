@@ -35,4 +35,3 @@ export enum P2PAction {
 
 export type Action = OnlineAction | P2PAction;
 export const MaxBuyInFactor = 200;
-export const VersionKey = 'Landlady8221';
