@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-    <BuyIn :showBuyIn.sync="showBuyIn" :min="0" :max="maxBuyInSize" @buyIn="buyIn"></BuyIn>
+    <BuyIn :showBuyIn.sync="showBuyIn" :min="maxBuyInSize" :max="maxBuyInSize" @buyIn="buyIn"></BuyIn>
   </div>
 </template>
 

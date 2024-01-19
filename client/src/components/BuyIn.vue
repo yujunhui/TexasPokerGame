@@ -5,10 +5,10 @@
       <div class="buy-in-body">
         <div class="input-bd">
           <div class="input-name">
-            <span>buy in:</span>
+            <span>buy in:&nbsp;</span>
             <input type="number" v-model="buyInSize" />
           </div>
-          <range :max="max" :min="min" v-model="buyInSize" @change="getBuyInSize"></range>
+          <range :max="max" :min="min" v-model="buyInSize" @change="getBuyInSize" v-show="max - min > 0"></range>
         </div>
         <div class="btn"><span @click="buyIn">buy in</span></div>
       </div>
@@ -29,9 +29,11 @@ export default class BuyIn extends Vue {
   @Prop() public showBuyIn!: boolean;
   @Prop() public min!: number;
   @Prop() public max!: number;
+  @Prop() public value!: any;
   public buyInSize: number = 0;
 
   @Watch('buyInSize')
+  @Watch('value')
   public wBuyInSize(val: number) {
     this.buyInSize = val > this.max ? this.max : val < this.min ? this.min : val;
   }

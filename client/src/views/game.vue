@@ -72,7 +72,13 @@
         </div>
       </Transition>
     </div>
-    <BuyIn :showBuyIn.sync="showBuyIn" :min="0" :max="canBuyInSize" @buyIn="buyIn"></BuyIn>
+    <BuyIn
+      :showBuyIn.sync="showBuyIn"
+      :min="canBuyInSize"
+      :max="canBuyInSize"
+      v-model="canBuyInSize"
+      @buyIn="buyIn"
+    ></BuyIn>
     <SpeakSettings :showSpeakSettings.sync="showSpeakSettings"></SpeakSettings>
     <toast :show.sync="showMsg" :text="msg"></toast>
     <Transition name="fade">
@@ -249,7 +255,8 @@ export default class Game extends Vue {
     ) {
       return 0;
     }
-    return this.limitBuyInSize - this.currentBuyInSize;
+    return this.maxOneOffBuyInSize;
+    // return this.limitBuyInSize - this.currentBuyInSize;
   }
 
   // 获取当前用户的筹码数(买入+赢)
