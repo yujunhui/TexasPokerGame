@@ -31,7 +31,7 @@ services:
       - app-network
 
   nginx:
-    image: dzp-nginx:latest
+    image: lionyuyu/texas-poker-game:nginx-latest
     build:
       context: ../client
       args:
@@ -52,7 +52,7 @@ services:
       - app-network
 
   api:
-    image: dzp-api:latest
+    image: lionyuyu/texas-poker-game:api-latest
     build:
       context: ../server
       args:
