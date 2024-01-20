@@ -35,7 +35,11 @@ export default class BuyIn extends Vue {
   @Watch('buyInSize')
   @Watch('value')
   public wBuyInSize(val: number) {
-    this.buyInSize = val > this.max ? this.max : val < this.min ? this.min : val;
+    if (this.value) {
+      this.buyInSize = this.value;
+    } else {
+      this.buyInSize = val > this.max ? this.max : val < this.min ? this.min : val;
+    }
   }
 
   public getBuyInSize(val: string) {

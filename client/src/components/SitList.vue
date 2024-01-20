@@ -79,7 +79,13 @@
         </div>
       </div>
     </div>
-    <BuyIn :showBuyIn.sync="showBuyIn" :min="maxBuyInSize" :max="maxBuyInSize" @buyIn="buyIn"></BuyIn>
+    <BuyIn
+      :showBuyIn.sync="showBuyIn"
+      :min="maxBuyInSize"
+      :max="maxBuyInSize"
+      v-model="maxBuyInSize"
+      @buyIn="buyIn"
+    ></BuyIn>
   </div>
 </template>
 
