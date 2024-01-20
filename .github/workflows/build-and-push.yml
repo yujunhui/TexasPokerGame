@@ -3,8 +3,13 @@ name: Build, Publish Docker image, and deploy
 on:
   workflow_dispatch:
     inputs:
+      build:
+        description: "Build and Push?"
+        required: true
+        default: true
+        type: boolean
       deploy:
-        description: "Deploy"
+        description: "Deploy?"
         required: true
         default: false
         type: boolean
@@ -13,6 +18,7 @@ jobs:
   build_push:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    if: ${{ inputs.build }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
