@@ -1,0 +1,28 @@
+name: Manually Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Deploy or not"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  deploy:
+    name: Deploy To Server
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: deploy
+        uses: appleboy/ssh-action@v1.0.3
+        if: ${{ inputs.deploy }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          command_timeout: 30m
+          script: |
+            cd ${{ secrets.SSH_WORK_DIR }} && make pull && make start

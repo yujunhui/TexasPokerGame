@@ -21,3 +21,6 @@ start-api:
 
 start-nginx:
 	${compose} up -d nginx
+
+pull:
+	${compose} pull
