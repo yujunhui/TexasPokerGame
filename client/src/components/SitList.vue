@@ -79,13 +79,7 @@
         </div>
       </div>
     </div>
-    <BuyIn
-      :showBuyIn.sync="showBuyIn"
-      :min="maxBuyInSize"
-      :max="maxBuyInSize"
-      v-model="maxBuyInSize"
-      @buyIn="buyIn"
-    ></BuyIn>
+    <BuyIn :showBuyIn.sync="showBuyIn" v-model="buyInSize" @buyIn="buyIn"></BuyIn>
   </div>
 </template>
 
@@ -120,7 +114,7 @@ export default class SitList extends Vue {
   @Prop() public valueCards!: string;
   @Prop({ default: 30, type: Number }) public time!: number;
   @Prop() public playersStatus!: IPlayersStatus;
-  @Prop() public maxBuyInSize!: number;
+  @Prop() public buyInSize!: number;
 
   public sitLinkNode: any = '';
   public showBuyIn = false;

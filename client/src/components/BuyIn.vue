@@ -6,9 +6,8 @@
         <div class="input-bd">
           <div class="input-name">
             <span>buy in:&nbsp;</span>
-            <input type="number" v-model="buyInSize" />
+            <input type="number" v-model="value" disabled />
           </div>
-          <range :max="max" :min="min" v-model="buyInSize" @change="getBuyInSize" v-show="max - min > 0"></range>
         </div>
         <div class="btn"><span @click="buyIn">buy in</span></div>
       </div>
@@ -27,24 +26,7 @@ import range from './Range.vue';
 })
 export default class BuyIn extends Vue {
   @Prop() public showBuyIn!: boolean;
-  @Prop() public min!: number;
-  @Prop() public max!: number;
   @Prop() public value!: any;
-  public buyInSize: number = 0;
-
-  @Watch('buyInSize')
-  @Watch('value')
-  public wBuyInSize(val: number) {
-    if (this.value) {
-      this.buyInSize = this.value;
-    } else {
-      this.buyInSize = val > this.max ? this.max : val < this.min ? this.min : val;
-    }
-  }
-
-  public getBuyInSize(val: string) {
-    this.buyInSize = Number(val);
-  }
 
   public closeBuyIn() {
     this.$emit('update:showBuyIn', false);
@@ -52,11 +34,7 @@ export default class BuyIn extends Vue {
 
   public async buyIn() {
     this.closeBuyIn();
-    this.$emit('buyIn', Number(this.buyInSize));
-    this.buyInSize = this.min;
-  }
-  public mounted() {
-    this.buyInSize = this.min;
+    this.$emit('buyIn', Number(this.value));
   }
 }
 </script>

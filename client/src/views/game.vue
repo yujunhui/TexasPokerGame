@@ -8,7 +8,7 @@
       :currPlayer="currPlayer"
       :hand-card="handCard"
       :isPlay="isPlay"
-      :max-buy-in-size="canBuyInSize"
+      :buy-in-size="buyInSize"
       :playersStatus="playersStatus"
       :roomConfig="roomConfig"
       :sitLink.sync="sitLink"
@@ -72,13 +72,7 @@
         </div>
       </Transition>
     </div>
-    <BuyIn
-      :showBuyIn.sync="showBuyIn"
-      :min="canBuyInSize"
-      :max="canBuyInSize"
-      v-model="canBuyInSize"
-      @buyIn="buyIn"
-    ></BuyIn>
+    <BuyIn :showBuyIn.sync="showBuyIn" v-model="buyInSize" @buyIn="buyIn"></BuyIn>
     <SpeakSettings :showSpeakSettings.sync="showSpeakSettings"></SpeakSettings>
     <toast :show.sync="showMsg" :text="msg"></toast>
     <Transition name="fade">
@@ -231,38 +225,17 @@ export default class Game extends Vue {
     return this.roomConfig.smallBlind || GAME_BASE_SIZE;
   }
 
-  // 获取当前用户的买入筹码数
-  get currentBuyInSize() {
-    return this.currPlayer?.buyIn || 0;
-  }
-
-  get maxOneOffBuyInSize() {
-    return this.baseSize * MaxBuyInFactor;
-  }
-
-  get limitBuyInSize() {
-    return (Math.floor(this.currentBuyInSize / this.maxOneOffBuyInSize) + 1) * this.maxOneOffBuyInSize;
-  }
-
-  get canBuyInSize() {
-    // 如果没输完, 且当前的buyin size 不是0(不是第一次买入)
-    // 那么看看能不能整除单次买入的最大buyin size
-    // 能整除代表到达买入限制了
-    if (
-      this.currentCounter !== 0 &&
-      this.currentBuyInSize !== 0 &&
-      this.currentBuyInSize % this.maxOneOffBuyInSize === 0
-    ) {
-      return 0;
-    }
-    return this.maxOneOffBuyInSize;
-    // return this.limitBuyInSize - this.currentBuyInSize;
-  }
-
   // 获取当前用户的筹码数(买入+赢)
   get currentCounter() {
     const player = this.players.find((u: IPlayer) => this.userInfo.userId === u.userId);
     return this.currPlayer?.counter || 0;
+  }
+
+  get buyInSize() {
+    if (this.currentCounter === 0) {
+      return this.baseSize * MaxBuyInFactor;
+    }
+    return 0;
   }
 
   get latestSpecialAction() {
@@ -758,11 +731,6 @@ export default class Game extends Vue {
     buyInSize = Number(buyInSize);
     if (buyInSize <= 0) {
       this.$plugin.toast('靓仔, 买个鸡春做咩啊');
-      return;
-    }
-
-    if (this.canBuyInSize === 0 || this.currentBuyInSize + buyInSize > this.limitBuyInSize) {
-      this.$plugin.toast('靓仔, 超过买入限制咯');
       return;
     }
 
