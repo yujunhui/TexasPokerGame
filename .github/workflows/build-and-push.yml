@@ -66,6 +66,8 @@ jobs:
     name: Deploy To Server
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    if: ${{ always() }}
+    needs: [build_push]
     steps:
       - name: deploy
         uses: appleboy/ssh-action@v1.0.3
