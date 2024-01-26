@@ -1,0 +1,54 @@
+name: Test Build Docker
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build_server:
+    name: Build server docker.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Server - Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./server
+          file: ./server/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_ENV=production
+            IDENTIFY_VERSION_KEY=IDENTIFY_VERSION_KEY
+          tags: texas-poker-game:api-latest
+
+  build_client:
+    name: Build client docker.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Client - Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./client
+          file: ./client/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_ENV=production
+            VUE_APP_API_IP=1.2.3.4
+            VUE_APP_API_PORT=8080
+            IDENTIFY_VERSION_KEY=IDENTIFY_VERSION_KEY
+          tags: texas-poker-game:nginx-latest
