@@ -39,7 +39,7 @@ export class RoomController extends BaseController {
   @Get('/')
   async getRooms() {
     try {
-      const result = await this.roomService.getRooms(3);
+      const result = await this.roomService.getRooms(10);
       this.success({ ...result });
     } catch (e) {
       this.fail('fetch rooms error');

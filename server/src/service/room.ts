@@ -30,7 +30,7 @@ export default class RoomService implements IRoomService {
     const ret: IRoomBasicInfo[] = [];
     const roomNumbersRet: string[] = await this.redis.keys(`${KeyPrefix}:*`);
     const roomNumbers = roomNumbersRet.map((e) => e.split(':')[1]);
-    if (!roomNumbers) {
+    if (roomNumbers.length === 0) {
       return ret;
     }
 
@@ -38,7 +38,7 @@ export default class RoomService implements IRoomService {
       where: { roomNumber: roomNumbers },
       columns: ['roomNumber', 'create_time'],
       orders: [['create_time', 'desc']],
-      limit: Math.max(3*size, 100),
+      limit: Math.max(3 * size, 100),
       offset: 0,
     });
 
@@ -52,10 +52,15 @@ export default class RoomService implements IRoomService {
       if (!room) return;
       const sitPlayers = room.roomInfo.sit;
       const names = sitPlayers.map((sit) => sit.player?.nickName).filter(Boolean);
-      ret.push({ roomNumber: r.roomNumber, createdAt: Number(r.create_time), playersNickName: names.join(','), playersCount: names.length });
+      ret.push({
+        roomNumber: r.roomNumber,
+        createdAt: Number(r.create_time),
+        playersNickName: names.join(','),
+        playersCount: names.length,
+      });
     });
     // > 0, then y, x
-    ret.sort((x, y) => y.playersCount - x.playersCount)
+    ret.sort((x, y) => y.playersCount - x.playersCount);
     return ret.slice(0, size);
   }
 
