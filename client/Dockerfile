@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json ./
 COPY tsconfig.json ./
 COPY yarn.lock ./
-RUN yarn
+RUN yarn install --ignore-engines
 
 COPY . .
 
