@@ -15,8 +15,8 @@ on:
         type: boolean
 
 jobs:
-  build_push:
-    name: Push Docker image to Docker Hub
+  build_server:
+    name: Build server docker and push.
     runs-on: ubuntu-latest
     if: ${{ inputs.build }}
     steps:
@@ -47,6 +47,25 @@ jobs:
             lionyuyu/texas-poker-game:api-latest
             lionyuyu/texas-poker-game:api-${{ github.event.release.tag_name || env.commit_date }}
 
+  build_client:
+    name: Build client docker and push.
+    runs-on: ubuntu-latest
+    if: ${{ inputs.build }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Get git commit date
+        id: date
+        run: |
+          echo "commit_date=$(git show -s --format=%cd --date=format:%Y%m%d-%H%M%S ${GITHUB_SHA})" >> $GITHUB_ENV
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Client - Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -67,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     if: ${{ always() }}
-    needs: [build_push]
+    needs: [build_server, build_client]
     steps:
       - name: deploy
         uses: appleboy/ssh-action@v1.0.3
