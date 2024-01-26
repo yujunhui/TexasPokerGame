@@ -1,10 +1,11 @@
-FROM node:10.24.1-alpine AS node
+FROM node:16-alpine AS node
 
 WORKDIR /app
 COPY package.json ./
 COPY tsconfig.json ./
 COPY yarn.lock ./
-RUN yarn install --ignore-engines
+RUN yarn config set "strict-ssl" false -g
+RUN yarn install
 
 COPY . .
 

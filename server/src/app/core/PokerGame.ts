@@ -378,7 +378,7 @@ export class PokerGame {
         size = this.prevSize;
         this.pot += size - actionSize;
       }
-      if(command === ECommand.BET) {
+      if (command === ECommand.BET) {
         this.pot += size - actionSize;
       }
       if (command === ECommand.FOLD) {
