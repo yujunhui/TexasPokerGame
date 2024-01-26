@@ -14,11 +14,16 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Server - Build Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./server
           file: ./server/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
             IDENTIFY_VERSION_KEY=IDENTIFY_VERSION_KEY
@@ -31,11 +36,16 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Client - Build Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./client
           file: ./client/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
             VUE_APP_API_IP=1.2.3.4
