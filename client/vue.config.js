@@ -2,6 +2,13 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
   },
+  productionSourceMap: false,
+  configureWebpack: {
+    performance: {
+      maxEntrypointSize: 1024 * 1000,
+      maxAssetSize: 1024 * 1000,
+    },
+  },
   chainWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       config.optimization.minimizer('terser').tap((args) => {
