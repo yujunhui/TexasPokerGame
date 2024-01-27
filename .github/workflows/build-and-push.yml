@@ -46,7 +46,7 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
-            IDENTIFY_VERSION_KEY=${{ env.GITHUB_SHA }}
+            IDENTIFY_VERSION_KEY="${GITHUB_SHA}"
           push: true
           tags: |
             lionyuyu/texas-poker-game:api-latest
@@ -83,9 +83,9 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
-            VUE_APP_API_IP=${{ env.VUE_APP_API_IP }}
-            VUE_APP_API_PORT=${{ env.VUE_APP_API_PORT }}
-            IDENTIFY_VERSION_KEY=${{ env.GITHUB_SHA }}
+            VUE_APP_API_IP="${VUE_APP_API_IP}"
+            VUE_APP_API_PORT="${VUE_APP_API_PORT}"
+            IDENTIFY_VERSION_KEY="${GITHUB_SHA}"
           push: true
           tags: |
             lionyuyu/texas-poker-game:nginx-latest
