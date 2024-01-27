@@ -4,7 +4,7 @@ This is an online Texas Hold'em game, base on TypeScript,Egg,Node.js,Vue
 
 ## Deploy
 
-[Github Action](https://github.com/yujunhui/TexasPokerGame/actions/workflows/build-and-push.yml)
+[![Build, Publish Docker image, and deploy](https://github.com/yujunhui/TexasPokerGame/actions/workflows/build-and-push.yml/badge.svg?event=workflow_dispatch)](https://github.com/yujunhui/TexasPokerGame/actions/workflows/build-and-push.yml)
 
 ## Docker start
 
