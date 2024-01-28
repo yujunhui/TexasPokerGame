@@ -95,7 +95,7 @@ jobs:
     name: Deploy To Server
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     needs: [build_server, build_client]
     steps:
       - name: deploy

@@ -344,6 +344,10 @@ class GameController extends BaseSocketController {
       console.log(userInfo, 'userInfo------', player);
       const isGaming = !!roomInfo.game;
       if (player) {
+        // player count not 0, can not buy in
+        if (player.counter !== 0) {
+          return;
+        }
         if (roomInfo.game) {
           const inTheGame = roomInfo.game.allPlayer.find((p) => p.userId === userInfo.userId);
           // player in the game, can't buy in

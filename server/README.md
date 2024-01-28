@@ -64,6 +64,12 @@ yarn
 yarn dev
 ```
 
+可以使用下面的命令进行打 log
+
+``` node
+this.ctx.logger.info('test');
+```
+
 ## 部署
 
 鉴于上述 socket.io 小节所说, package.json 中的 `start` 相关的命令都加了 `--workers=1 --sticky`
