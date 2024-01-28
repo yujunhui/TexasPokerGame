@@ -76,7 +76,7 @@ export default class Card extends Vue {
     z-index: 0;
 
     i {
-      background: url('../assets/poke.png');
+      background: url('../assets/icon/poke.png');
       height: 60px;
       width: 40px;
       background-size: 100% 100%;
@@ -90,7 +90,6 @@ export default class Card extends Vue {
     }
 
     .card-bg {
-      /*background: url("../assets/poke-icon.png");*/
       background-size: 100% 100%;
       height: 60px;
       width: 40px;

@@ -3,8 +3,9 @@
     <msgList :msgList="msgList" :show="showMsgList"></msgList>
     <div class="send-msg-body">
       <div class="msg-name iconfont icon-msg" @click="showMsgList = !showMsgList"></div>
+      <div class="msg-name quick-send" @click="showPresets = !showPresets"></div>
       <div class="msg-input">
-        <input type="text" @keyup.13="send" v-model="msg" @focus="onFocus" />
+        <input type="text" @keyup.13="send" v-model="msg" @focus="onMsgInputFocus" />
         <ul class="presets" :class="{ show: showPresets }" ref="presetsContainer">
           <li v-for="(item, index) in presets" :key="index">
             <div class="preset-content" @click="sendPreset(item)">{{ item }}</div>
@@ -94,8 +95,8 @@ export default class SendMsg extends Vue {
     this.showPresets = false;
   }
 
-  public onFocus() {
-    this.showPresets = true;
+  public onMsgInputFocus() {
+    this.showPresets = false;
     this.scrollPresetsToBottom();
   }
 
@@ -195,6 +196,11 @@ export default class SendMsg extends Vue {
       font-size: 30px;
       color: #009870;
       text-align: center;
+    }
+
+    .quick-send {
+      background: url('../assets/icon/quick-send.svg') center no-repeat;
+      height: 28px;
     }
 
     .msg-input {

@@ -947,7 +947,7 @@ export default class Game extends Vue {
       top: 0;
       left: 0;
       margin: 10px;
-      background: url('../assets/setting-btn.svg');
+      background: url('../assets/icon/setting-btn.svg');
       background-size: 1rem;
       width: 1rem;
       height: 1rem;

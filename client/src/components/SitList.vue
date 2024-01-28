@@ -426,7 +426,7 @@ export default class SitList extends Vue {
         }
 
         .action-size {
-          background: rgba(0, 0, 0, 0.3) url('../assets/gold.svg') center left no-repeat;
+          background: rgba(0, 0, 0, 0.3) url('../assets/icon/gold.svg') center left no-repeat;
           background-size: contain;
           border-radius: 2px;
           padding: 1px 4px 1px 17px;
