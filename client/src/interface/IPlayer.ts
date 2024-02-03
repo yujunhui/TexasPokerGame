@@ -20,6 +20,7 @@ export interface IPlayer {
   /** 自愿 action 次数, 不包括 fold, 大小盲 */
   voluntaryActionCountAtPreFlop: number;
   /** 总 action 次数, 包括 fold */
-  totalActionCountAtPreFlop: number;
-  vpip: number;
+  actionCountAtPreFlop: number;
+  winCountAtPreFlop: number;
+  gameCount: number;
 }

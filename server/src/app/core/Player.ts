@@ -16,11 +16,16 @@ export interface IPlayer {
   actionCommand: string;
   delayCount?: number;
   id?: number;
+  /** 游戏总局数 */
+  gameCount: number;
   /** 翻前自愿 action 次数, 不包括 fold, 大小盲 */
   voluntaryActionCountAtPreFlop: number;
   /** 翻前总 action 次数, 包括 fold */
-  totalActionCountAtPreFlop: number;
-  vpip: number;
+  actionCountAtPreFlop: number;
+  /** 翻前 walks 次数，指在大盲位，其他人不 raise 且 fold，大盲获胜 */
+  walksCountAtPreFlop: number;
+  /** 翻前赢的次数 */
+  winCountAtPreFlop: number;
 }
 
 export enum ECommand {
@@ -59,11 +64,13 @@ export class Player {
   inPot: number = 0;
   income: number = 0;
   pokerStyle: string = '';
+  gameCount = 0;
   // 用来辅助 vpip计算, 代表 preflop 圈, 是不是第一次动作
   isPreFlopFirstAction = true;
   voluntaryActionCountAtPreFlop = 0;
-  totalActionCountAtPreFlop = 0;
-  vpip = 0;
+  actionCountAtPreFlop = 0;
+  walksCountAtPreFlop = 0;
+  winCountAtPreFlop = 0;
 
   constructor(config: IPlayer) {
     this.counter = config.counter;
@@ -71,9 +78,11 @@ export class Player {
     this.userId = config.userId;
     this.socketId = config.socketId;
     this.nickName = config.nickName;
+    this.gameCount = config.gameCount || 0;
     this.voluntaryActionCountAtPreFlop = config.voluntaryActionCountAtPreFlop || 0;
-    this.totalActionCountAtPreFlop = config.totalActionCountAtPreFlop || 0;
-    this.vpip = config.vpip || 0;
+    this.actionCountAtPreFlop = config.actionCountAtPreFlop || 0;
+    this.walksCountAtPreFlop = config.walksCountAtPreFlop || 0;
+    this.winCountAtPreFlop = config.winCountAtPreFlop || 0;
     if (this.position === 0) {
       this.type = EPlayerType.DEALER;
     }
@@ -215,7 +224,7 @@ export class Player {
     if (commonCardLength !== 0 || !this.isPreFlopFirstAction) return;
     const playerType = this.type as EPlayerType;
 
-    this.totalActionCountAtPreFlop += 1;
+    this.actionCountAtPreFlop += 1;
 
     // 非大小盲的时候, check, call, raise, allin 都加主动下注次数
     if (
@@ -235,8 +244,14 @@ export class Player {
       this.voluntaryActionCountAtPreFlop += 1;
     }
 
-    this.vpip =
-      this.totalActionCountAtPreFlop === 0 ? 0 : this.voluntaryActionCountAtPreFlop / this.totalActionCountAtPreFlop;
     this.isPreFlopFirstAction = false;
+  }
+
+  addWinCountAtPreFlop() {
+    this.winCountAtPreFlop += 1;
+  }
+
+  addWalksCount() {
+    this.walksCountAtPreFlop += 1;
   }
 }

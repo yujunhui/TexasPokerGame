@@ -92,9 +92,11 @@ export default class BaseSocketController extends Controller {
         p.actionCommand = (currPlayer && currPlayer.actionCommand) || '';
         p.delayCount = (currPlayer && currPlayer.delayCount) || 0;
         p.actionSize = (currPlayer && currPlayer.actionSize) || 0;
+        p.gameCount = currPlayer?.gameCount || p.gameCount;
         p.voluntaryActionCountAtPreFlop = currPlayer?.voluntaryActionCountAtPreFlop || p.voluntaryActionCountAtPreFlop;
-        p.totalActionCountAtPreFlop = currPlayer?.totalActionCountAtPreFlop || p.totalActionCountAtPreFlop;
-        p.vpip = currPlayer?.vpip || p.vpip;
+        p.actionCountAtPreFlop = currPlayer?.actionCountAtPreFlop || p.actionCountAtPreFlop;
+        p.walksCountAtPreFlop = currPlayer?.walksCountAtPreFlop || p.walksCountAtPreFlop;
+        p.winCountAtPreFlop = currPlayer?.winCountAtPreFlop || p.winCountAtPreFlop;
       });
       console.log(roomInfo.players, 'roomInfo.players ===============================333');
       const gameInfo = {
@@ -112,10 +114,12 @@ export default class BaseSocketController extends Controller {
               userId: p.userId,
               buyIn: p.buyIn || 0,
               delayCount: currPlayer?.delayCount || 0,
+              gameCount: currPlayer?.gameCount || p.gameCount,
               voluntaryActionCountAtPreFlop:
                 currPlayer?.voluntaryActionCountAtPreFlop || p.voluntaryActionCountAtPreFlop,
-              totalActionCountAtPreFlop: currPlayer?.totalActionCountAtPreFlop || p.totalActionCountAtPreFlop,
-              vpip: currPlayer?.vpip || p.vpip,
+              actionCountAtPreFlop: currPlayer?.actionCountAtPreFlop || p.actionCountAtPreFlop,
+              walksCountAtPreFlop: currPlayer?.walksCountAtPreFlop || p.walksCountAtPreFlop,
+              winCountAtPreFlop: currPlayer?.winCountAtPreFlop || p.winCountAtPreFlop,
             },
             {},
           );

@@ -113,16 +113,20 @@ class GameController extends BaseSocketController {
                 const sit = roomInfo.sit.find((s: ISit) => s.player?.userId === gamePlayer.userId);
                 if (player && sit) {
                   player.counter = gamePlayer.counter;
+                  player.gameCount = gamePlayer.gameCount;
                   player.voluntaryActionCountAtPreFlop = gamePlayer.voluntaryActionCountAtPreFlop;
-                  player.totalActionCountAtPreFlop = gamePlayer.totalActionCountAtPreFlop;
-                  player.vpip = gamePlayer.vpip;
+                  player.actionCountAtPreFlop = gamePlayer.actionCountAtPreFlop;
+                  player.winCountAtPreFlop = gamePlayer.winCountAtPreFlop;
+                  player.walksCountAtPreFlop = gamePlayer.walksCountAtPreFlop;
                   player.actionCommand = '';
                   player.actionSize = 0;
                   player.type = '';
                   sit.player!.counter = gamePlayer.counter;
+                  sit.player!.gameCount = gamePlayer.gameCount;
                   sit.player!.voluntaryActionCountAtPreFlop = gamePlayer.voluntaryActionCountAtPreFlop;
-                  sit.player!.totalActionCountAtPreFlop = gamePlayer.totalActionCountAtPreFlop;
-                  sit.player!.vpip = gamePlayer.vpip;
+                  sit.player!.actionCountAtPreFlop = gamePlayer.actionCountAtPreFlop;
+                  sit.player!.winCountAtPreFlop = gamePlayer.winCountAtPreFlop;
+                  sit.player!.walksCountAtPreFlop = gamePlayer.walksCountAtPreFlop;
                   sit.player!.actionCommand = '';
                   sit.player!.actionSize = 0;
                   sit.player!.type = '';
@@ -287,9 +291,11 @@ class GameController extends BaseSocketController {
             // calculate re buy in
             s.player.counter = player.counter;
             s.player.counter += Number(player.reBuy);
+            s.player.gameCount = player.gameCount;
             s.player.voluntaryActionCountAtPreFlop = player.voluntaryActionCountAtPreFlop;
-            s.player.totalActionCountAtPreFlop = player.totalActionCountAtPreFlop;
-            s.player.vpip = player.vpip;
+            s.player.actionCountAtPreFlop = player.actionCountAtPreFlop;
+            s.player.winCountAtPreFlop = player.winCountAtPreFlop;
+            s.player.walksCountAtPreFlop = player.walksCountAtPreFlop;
             console.log('cal reBuy ===============================', s.player, player.reBuy);
             player.reBuy = 0;
             s.player.reBuy = 0;
