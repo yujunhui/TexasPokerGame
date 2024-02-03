@@ -1,10 +1,10 @@
 /**
  * Created by jorky on 2020/2/23.
  */
-import { IPoker, Poker } from './Poker';
-import { ECommand, EPlayerType, IPlayer, Player } from './Player';
-import { PokerStyle } from './PokerStyle';
 import { ILinkNode, Link } from '../../utils/Link';
+import { ECommand, EPlayerType, IPlayer, Player } from './Player';
+import { IPoker, Poker } from './Poker';
+import { PokerStyle } from './PokerStyle';
 import Timeout = NodeJS.Timeout;
 
 /**
@@ -43,13 +43,11 @@ export enum EGameStatus {
 
 /**
  * Action time
- * @type {number}
  */
 const ACTION_TIME = 30 * 1000;
 
 /**
  * Delay add time
- * @type {number}
  */
 const DELAY_ADD_TIME = 60 * 1000;
 
@@ -146,6 +144,13 @@ export class PokerGame {
       console.log('only one player');
       this.gameOverType = EGameOverType.GAME_OVER;
       const winner = this.allInPlayers[0] || this.currPlayer.node;
+      if (this.status === EGameStatus.GAME_FLOP) {
+        // 更新翻前获胜次数
+        winner.addWinCountAtPreFlop();
+        if (winner.type == EPlayerType.BIG_BLIND && winner.inPot === this.smallBlind * 2) {
+          winner.addWalksCount();
+        }
+      }
       this.status = EGameStatus.GAME_OVER;
       this.winner.push([winner]);
       return;
@@ -186,7 +191,7 @@ export class PokerGame {
    * @param {IPlayer[]} users
    * @returns {Link<Player>}
    */
-  setPlayer(users: IPlayer[]) {
+  setPlayer(users: IPlayer[]): Link<Player> {
     console.log('init player ======================================================', users);
     users.forEach((u, position) => {
       const player = new Player({
@@ -204,7 +209,7 @@ export class PokerGame {
    * @param {Player[]} excludePlayers - exclude player
    * @returns {any[]}
    */
-  getPlayers(type = 'all', excludePlayers?: Player[]) {
+  getPlayers(type: string = 'all', excludePlayers?: Player[]): any[] {
     let players = [];
     let nextPlayer: ILinkNode<Player> = this.playerLink.link;
     let i = 0;
@@ -240,7 +245,6 @@ export class PokerGame {
 
   /**
    * Counting allin player slide pot
-   * @returns {number}
    */
   getLeftoverPot() {
     if (this.winner.length === 0) {
@@ -254,7 +258,7 @@ export class PokerGame {
    * @param {Player[]} lastPlayers
    * @returns {Player[]}
    */
-  getMaxPlayers(lastPlayers: Player[]) {
+  getMaxPlayers(lastPlayers: Player[]): Player[] {
     const _maxPlayers: Player[] = [];
     const maxPlayer = lastPlayers.reduce((acc, cur) => {
       return this.compareCard(acc, cur) === 1 ? acc : cur;
@@ -273,7 +277,7 @@ export class PokerGame {
    * if small blind is already fold, then next in the game player
    * @returns {ILinkNode<Player>}
    */
-  getFirstActionPlayer() {
+  getFirstActionPlayer(): ILinkNode<Player> {
     const player = this.allPlayer.filter((p) => p.counter > 0 && p.position !== 0 && p.actionCommand !== 'fold')[0];
     console.log('getFirstActionPlayer-------player', player);
     let link: ILinkNode<Player> | null = this.playerLink.link;
@@ -334,6 +338,9 @@ export class PokerGame {
   play() {
     this.status = EGameStatus.GAME_START;
     this.sendCard();
+    this.allPlayer.forEach((player) => {
+      player.gameCount++;
+    });
   }
 
   /**
@@ -591,7 +598,7 @@ export class PokerGame {
    * @param {Player} targetPlayer - second player
    * @returns {number} - target player, bigger: -1, equal: 0, less than: 1
    */
-  compareCard(player: Player, targetPlayer: Player) {
+  compareCard(player: Player, targetPlayer: Player): number {
     const firstWeight = player.pokerStyle;
     const lastWeight = targetPlayer.pokerStyle;
     let flag = -1;

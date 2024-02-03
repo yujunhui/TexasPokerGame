@@ -53,9 +53,11 @@ export default () => {
         buyIn: 0,
         delayCount: 3,
         reBuy: 0,
+        gameCount: 0,
         voluntaryActionCountAtPreFlop: 0,
-        totalActionCountAtPreFlop: 0,
-        vpip: 0,
+        actionCountAtPreFlop: 0,
+        walksCountAtPreFlop: 0,
+        winCountAtPreFlop: 0,
       };
 
       if (!cachedRoom) {
@@ -129,10 +131,12 @@ export default () => {
                     userId: p.userId,
                     status: p.status,
                     buyIn: p.buyIn || 0,
+                    gameCount: currPlayer?.gameCount || p.gameCount,
                     voluntaryActionCountAtPreFlop:
                       currPlayer?.voluntaryActionCountAtPreFlop || p.voluntaryActionCountAtPreFlop,
-                    totalActionCountAtPreFlop: currPlayer?.totalActionCountAtPreFlop || p.totalActionCountAtPreFlop,
-                    vpip: currPlayer?.vpip || p.vpip,
+                    actionCountAtPreFlop: currPlayer?.actionCountAtPreFlop || p.actionCountAtPreFlop,
+                    walksCountAtPreFlop: currPlayer?.walksCountAtPreFlop || p.walksCountAtPreFlop,
+                    winCountAtPreFlop: currPlayer?.winCountAtPreFlop || p.winCountAtPreFlop,
                   },
                   {},
                 );

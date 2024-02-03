@@ -10,6 +10,7 @@
           <i>counter</i>
           <i>income</i>
           <i>VPIP(V/Total)</i>
+          <i>翻前胜率</i>
         </li>
         <li v-for="player in players">
           <i>{{ player.nickName }}</i>
@@ -17,6 +18,7 @@
           <i>{{ player.counter }}</i>
           <i>{{ player.counter - player.buyIn }}</i>
           <i>{{ formatVPIP(player) }}</i>
+          <i>{{ formatPreFlopEquilty(player) }}</i>
         </li>
       </ul>
     </div>
@@ -43,10 +45,17 @@ export default class Record extends Vue {
   }
 
   public formatVPIP(player: IPlayer) {
-    const rate = (player.vpip * 100).toFixed(2);
     const v = player.voluntaryActionCountAtPreFlop;
-    const a = player.totalActionCountAtPreFlop;
+    const a = player.actionCountAtPreFlop;
+    const rate = a === 0 ? 0 : ((v / a) * 100).toFixed(2);
     return `${rate}% (${v}/${a})`;
+  }
+
+  public formatPreFlopEquilty(player: IPlayer) {
+    const win = player.winCountAtPreFlop;
+    const total = player.gameCount;
+    const rate = total === 0 ? 0 : ((win / total) * 100).toFixed(2);
+    return `${rate}% (${win}/${total})`;
   }
 }
 </script>
