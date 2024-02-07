@@ -508,7 +508,6 @@ export default class Game extends Vue {
   public socketInit() {
     const token = cookie.get('token') || localStorage.getItem('token') || '';
     const roomConfig = this.getRoomConfig();
-    const log = console.log;
     this.roomConfig = JSON.parse(roomConfig);
     console.log(JSON.parse(roomConfig), 'roomConfig');
     this.socket = io(this.getSocketServerUrl(), {
@@ -521,14 +520,14 @@ export default class Game extends Vue {
       },
       transports: ['websocket'],
     });
-    log('#init,', this.socket);
+    console.log('#init,', this.socket);
     this.socket.on('connect', () => {
       const id: string = this.socket.id;
-      log('#connect,', id, this.socket);
+      console.log('#connect,', id, this.socket);
 
       // 监听自身 id 以实现 p2p 通讯
       this.socket.on(id, (msg: any) => {
-        log('#receive,', msg);
+        console.log('#receive,', msg);
         const data = msg.data;
         if (data.action === P2PAction.HandCard) {
           console.log('come in handCard =========', data);
@@ -574,7 +573,7 @@ export default class Game extends Vue {
 
     // 接收在线用户信息
     this.socket.on(Online, (msg: IMsg) => {
-      log('#online,', msg);
+      console.log('#online,', msg);
       if (msg.action === OnlineAction.SitList) {
         console.log(msg.data, 'sit');
         this.sitList = msg.data.sitList;
@@ -708,17 +707,17 @@ export default class Game extends Vue {
     this.socket.on('disconnect', (msg: IMsg) => {
       // this.$plugin.toast('room is disconnect');
       // this.socketInit();
-      log('#disconnect', msg);
+      console.log('#disconnect', msg);
     });
 
     this.socket.on('disconnecting', () => {
       this.$plugin.toast('room is disconnecting');
-      log('#disconnecting');
+      console.log('#disconnecting');
     });
 
     this.socket.on('error', () => {
       this.$plugin.toast('room is error');
-      log('#error');
+      console.log('#error');
     });
   }
 
