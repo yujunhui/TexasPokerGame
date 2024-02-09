@@ -371,7 +371,7 @@ export class PokerGame {
   action(commandString: string) {
     if (this.status === EGameStatus.GAME_ACTION && this.currPlayer.next) {
       const commands = commandString.split(':');
-      const command = commands[0];
+      const command = commands[0] as ECommand;
       let size = Number(commands[1]);
       const actionSize = this.currPlayer.node.actionSize >= 0 ? this.currPlayer.node.actionSize : 0;
       if (command === ECommand.ALL_IN) {
@@ -410,9 +410,9 @@ export class PokerGame {
         );
         size = -1;
       }
-      if (command === ECommand.RAISE) {
+      if ([ECommand.RAISE, ECommand.BET].includes(command)) {
         // counter not enough raise
-        if (size === 0 || size < this.prevSize * 2) {
+        if (size === 0 || size < this.prevSize * 2 || size < this.smallBlind * 2) {
           throw `incorrect action: raise ========= action size: ${this.currPlayer.node.actionSize}, prevSize: ${this.prevSize}`;
         }
         this.pot += size - actionSize;
