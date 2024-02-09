@@ -417,6 +417,10 @@ export class PokerGame {
         }
         this.pot += size - actionSize;
       }
+      // 记录翻前加注的次数
+      if (this.commonCard.length === 0 && ECommand.RAISE === command) {
+        this.currPlayer.node.addRaiseCountAtPreFlop();
+      }
       try {
         clearTimeout(this.actionTimeOut);
         this.currPlayer.node.action(commandString, this.prevSize);

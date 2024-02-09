@@ -9,6 +9,7 @@ import { ICommandRecord } from '../../../interface/ICommandRecord';
 import { IPlayerDTO } from '../../../interface/IPlayer';
 import { Online, OnlineAction, P2PAction } from '../../../utils/constant';
 import { EggLogger } from 'egg';
+import { Player } from '../../core/Player';
 
 class GameController extends BaseSocketController {
   private async getSitDownPlayer(roomInfo: IRoomInfo): Promise<IPlayer[]> {
@@ -117,6 +118,7 @@ class GameController extends BaseSocketController {
                   player.voluntaryActionCountAtPreFlop = gamePlayer.voluntaryActionCountAtPreFlop;
                   player.actionCountAtPreFlop = gamePlayer.actionCountAtPreFlop;
                   player.winCountAtPreFlop = gamePlayer.winCountAtPreFlop;
+                  player.raiseCountAtPreFlop = gamePlayer.raiseCountAtPreFlop;
                   player.walksCountAtPreFlop = gamePlayer.walksCountAtPreFlop;
                   player.actionCommand = '';
                   player.actionSize = 0;
@@ -126,6 +128,7 @@ class GameController extends BaseSocketController {
                   sit.player!.voluntaryActionCountAtPreFlop = gamePlayer.voluntaryActionCountAtPreFlop;
                   sit.player!.actionCountAtPreFlop = gamePlayer.actionCountAtPreFlop;
                   sit.player!.winCountAtPreFlop = gamePlayer.winCountAtPreFlop;
+                  sit.player!.raiseCountAtPreFlop = gamePlayer.raiseCountAtPreFlop;
                   sit.player!.walksCountAtPreFlop = gamePlayer.walksCountAtPreFlop;
                   sit.player!.actionCommand = '';
                   sit.player!.actionSize = 0;
@@ -295,6 +298,7 @@ class GameController extends BaseSocketController {
             s.player.voluntaryActionCountAtPreFlop = player.voluntaryActionCountAtPreFlop;
             s.player.actionCountAtPreFlop = player.actionCountAtPreFlop;
             s.player.winCountAtPreFlop = player.winCountAtPreFlop;
+            s.player.raiseCountAtPreFlop = player.raiseCountAtPreFlop;
             s.player.walksCountAtPreFlop = player.walksCountAtPreFlop;
             console.log('cal reBuy ===============================', s.player, player.reBuy);
             player.reBuy = 0;

@@ -97,6 +97,7 @@ export default class BaseSocketController extends Controller {
         p.actionCountAtPreFlop = currPlayer?.actionCountAtPreFlop || p.actionCountAtPreFlop;
         p.walksCountAtPreFlop = currPlayer?.walksCountAtPreFlop || p.walksCountAtPreFlop;
         p.winCountAtPreFlop = currPlayer?.winCountAtPreFlop || p.winCountAtPreFlop;
+        p.raiseCountAtPreFlop = currPlayer?.raiseCountAtPreFlop || p.raiseCountAtPreFlop;
       });
       console.log(roomInfo.players, 'roomInfo.players ===============================333');
       const gameInfo = {
@@ -120,6 +121,7 @@ export default class BaseSocketController extends Controller {
               actionCountAtPreFlop: currPlayer?.actionCountAtPreFlop || p.actionCountAtPreFlop,
               walksCountAtPreFlop: currPlayer?.walksCountAtPreFlop || p.walksCountAtPreFlop,
               winCountAtPreFlop: currPlayer?.winCountAtPreFlop || p.winCountAtPreFlop,
+              raiseCountAtPreFlop: currPlayer?.raiseCountAtPreFlop || p.raiseCountAtPreFlop,
             },
             {},
           );

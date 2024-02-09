@@ -2,14 +2,18 @@
   <div class="record-container" v-show="show">
     <div class="shadow" @click="show = false"></div>
     <div class="body">
-      <div class="title">牌局记录</div>
+      <div class="title">
+        牌局记录
+        <span class="close" @click="show = false">X</span>
+      </div>
       <ul>
-        <li>
-          <i>nickName</i>
+        <li class="record-header">
+          <i>昵称</i>
           <i>buy in</i>
           <i>counter</i>
           <i>income</i>
           <i>VPIP (V/Total)</i>
+          <i>PFR</i>
           <i>翻前胜率</i>
         </li>
         <li v-for="player in players">
@@ -17,8 +21,9 @@
           <i>{{ player.buyIn }}</i>
           <i>{{ player.counter }}</i>
           <i>{{ player.counter - player.buyIn }}</i>
-          <i>{{ formatVPIP(player) }}</i>
-          <i>{{ formatPreFlopEquity(player) }}</i>
+          <i v-html="formatVPIP(player)"></i>
+          <i v-html="formatPFR(player)"></i>
+          <i v-html="formatPreFlopEquity(player)"></i>
         </li>
       </ul>
     </div>
@@ -44,24 +49,24 @@ export default class Record extends Vue {
     this.$emit('input', val);
   }
 
-  public formatVPIP(player: IPlayer) {
-    const v = player.voluntaryActionCountAtPreFlop;
-    const a = player.actionCountAtPreFlop;
-    if (a === 0) {
+  private formatPercentage(numerator: number, denominator: number) {
+    if (denominator === 0 || numerator === 0) {
       return '0%';
     }
-    const rate = ((v / a) * 100).toFixed(2);
-    return `${rate}% (${v}/${a})`;
+    const rate = ((numerator / denominator) * 100).toFixed(2);
+    return `${rate}%<br />(${numerator}/${denominator})`;
+  }
+
+  public formatVPIP(player: IPlayer) {
+    return this.formatPercentage(player.voluntaryActionCountAtPreFlop, player.actionCountAtPreFlop);
+  }
+
+  public formatPFR(player: IPlayer) {
+    return this.formatPercentage(player.raiseCountAtPreFlop, player.actionCountAtPreFlop);
   }
 
   public formatPreFlopEquity(player: IPlayer) {
-    const win = player.winCountAtPreFlop;
-    const total = player.gameCount;
-    if (total === 0) {
-      return '0%';
-    }
-    const rate = ((win / total) * 100).toFixed(2);
-    return `${rate}% (${win}/${total})`;
+    return this.formatPercentage(player.winCountAtPreFlop, player.gameCount);
   }
 }
 </script>
@@ -69,7 +74,7 @@ export default class Record extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .record-container {
-  width: 80vw;
+  width: 100vw;
   height: 100vh;
   color: #fff;
   background: #2a2a2a;
@@ -77,6 +82,12 @@ export default class Record extends Vue {
   left: 0;
   top: 0;
   z-index: 9999;
+
+  .close {
+    color: red;
+    text-align: right;
+    float: right;
+  }
 
   .shadow {
     background: rgba(0, 0, 0, 0.3);
@@ -98,12 +109,17 @@ export default class Record extends Vue {
     text-align: left;
     line-height: 30px;
     padding: 5px 10px;
-    border-bottom: 1px solid #fff;
+    border-bottom: 2px solid #fff;
   }
 
   ul {
+    li.record-header {
+      font-weight: bold;
+    }
+
     li {
       display: flex;
+      border-bottom: 1px solid #c7bc68;
 
       i {
         flex: 1;
