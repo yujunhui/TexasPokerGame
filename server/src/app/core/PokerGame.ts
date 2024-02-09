@@ -385,9 +385,6 @@ export class PokerGame {
         size = this.prevSize;
         this.pot += size - actionSize;
       }
-      if (command === ECommand.BET) {
-        this.pot += size - actionSize;
-      }
       if (command === ECommand.FOLD) {
         this.removePlayer(this.currPlayer.node);
       }
