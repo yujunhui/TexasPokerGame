@@ -8,8 +8,12 @@
       <source src="../assets/mp3/raise.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
-    <audio ref="raise-notice" controls>
-      <source src="../assets/mp3/raise-notice.mp3" type="audio/mpeg" />
+    <audio ref="raise-ms-xiaoxiao-raise" controls>
+      <source src="../assets/mp3/raise-ms-xiaoxiao-raise.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <audio ref="raise-ms-xiaobei-dani" controls>
+      <source src="../assets/mp3/raise-ms-xiaobei-dani.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
     <audio ref="fold" controls>
@@ -20,8 +24,8 @@
       <source src="../assets/mp3/income.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
-    <audio ref="allin-notice" controls>
-      <source src="../assets/mp3/allin-notice.mp3" type="audio/mpeg" />
+    <audio ref="allin-ms-xiaoxiao-allin" controls>
+      <source src="../assets/mp3/allin-ms-xiaoxiao-allin.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
   </div>
