@@ -26,6 +26,8 @@ export interface IPlayer {
   walksCountAtPreFlop: number;
   /** 翻前赢的次数 */
   winCountAtPreFlop: number;
+  /** 翻前raise的次数 */
+  raiseCountAtPreFlop: number;
 }
 
 export enum ECommand {
@@ -71,6 +73,7 @@ export class Player {
   actionCountAtPreFlop = 0;
   walksCountAtPreFlop = 0;
   winCountAtPreFlop = 0;
+  raiseCountAtPreFlop = 0;
 
   constructor(config: IPlayer) {
     this.counter = config.counter;
@@ -83,6 +86,7 @@ export class Player {
     this.actionCountAtPreFlop = config.actionCountAtPreFlop || 0;
     this.walksCountAtPreFlop = config.walksCountAtPreFlop || 0;
     this.winCountAtPreFlop = config.winCountAtPreFlop || 0;
+    this.raiseCountAtPreFlop = config.raiseCountAtPreFlop || 0;
     if (this.position === 0) {
       this.type = EPlayerType.DEALER;
     }
@@ -249,6 +253,10 @@ export class Player {
 
   addWinCountAtPreFlop() {
     this.winCountAtPreFlop += 1;
+  }
+
+  addRaiseCountAtPreFlop() {
+    this.raiseCountAtPreFlop += 1;
   }
 
   addWalksCount() {

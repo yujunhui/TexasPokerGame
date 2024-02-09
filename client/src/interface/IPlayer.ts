@@ -17,10 +17,11 @@ export interface IPlayer {
   income?: number;
   isSit: boolean;
   delayCount: number;
+  gameCount: number;
   /** 自愿 action 次数, 不包括 fold, 大小盲 */
   voluntaryActionCountAtPreFlop: number;
   /** 总 action 次数, 包括 fold */
   actionCountAtPreFlop: number;
   winCountAtPreFlop: number;
-  gameCount: number;
+  raiseCountAtPreFlop: number;
 }
