@@ -84,16 +84,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
+import BuyIn from '@/components/BuyIn.vue';
 import { IPlayer } from '@/interface/IPlayer';
 import { IPlayersStatus } from '@/interface/IPlayersStatus';
-import { ILinkNode } from '@/utils/Link';
-import ISit from '@/interface/ISit';
-import cardList from './CardList.vue';
-import BuyIn from '@/components/BuyIn.vue';
-import { PokerStyle } from '@/utils/PokerStyle';
-import map from '../utils/map';
 import { IRoom } from '@/interface/IRoom';
+import ISit from '@/interface/ISit';
+import { ILinkNode } from '@/utils/Link';
+import { PokerStyle } from '@/utils/PokerStyle';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import map from '../utils/map';
+import cardList from './CardList.vue';
 
 @Component({
   components: {

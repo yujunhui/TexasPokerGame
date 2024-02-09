@@ -1,11 +1,11 @@
+import cookie from 'js-cookie';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import service from '../service';
+import Game from '../views/game.vue';
 import Home from '../views/home.vue';
 import Login from '../views/login.vue';
 import Register from '../views/register.vue';
-import Game from '../views/game.vue';
-import service from '../service';
-import cookie from 'js-cookie';
 
 Vue.use(VueRouter);
 

@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
 import { IPlayer } from '@/interface/IPlayer';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
   components: {},
@@ -49,14 +49,6 @@ export default class Record extends Vue {
     this.$emit('input', val);
   }
 
-  private formatPercentage(numerator: number, denominator: number) {
-    if (denominator === 0 || numerator === 0) {
-      return '0%';
-    }
-    const rate = ((numerator / denominator) * 100).toFixed(2);
-    return `${rate}%<br />(${numerator}/${denominator})`;
-  }
-
   public formatVPIP(player: IPlayer) {
     return this.formatPercentage(player.voluntaryActionCountAtPreFlop, player.actionCountAtPreFlop);
   }
@@ -67,6 +59,14 @@ export default class Record extends Vue {
 
   public formatPreFlopEquity(player: IPlayer) {
     return this.formatPercentage(player.winCountAtPreFlop, player.gameCount);
+  }
+
+  private formatPercentage(numerator: number, denominator: number) {
+    if (denominator === 0 || numerator === 0) {
+      return '0%';
+    }
+    const rate = ((numerator / denominator) * 100).toFixed(2);
+    return `${rate}%<br />(${numerator}/${denominator})`;
   }
 }
 </script>

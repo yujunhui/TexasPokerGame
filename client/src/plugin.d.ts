@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import { ToastExtendConstructor, IOptions } from '../src/plugins/toast';
+import { IOptions, ToastExtendConstructor } from '../src/plugins/toast';
 
 interface IPlugin {
   toast(options: string | IOptions): ToastExtendConstructor;

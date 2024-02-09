@@ -45,10 +45,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import range from './Range.vue';
-import iAudio from './Audio.vue';
 import { IPlayer } from '@/interface/IPlayer';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import iAudio from './Audio.vue';
+import range from './Range.vue';
 
 @Component({
   components: {

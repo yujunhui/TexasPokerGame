@@ -1,5 +1,5 @@
-import { PokerGame } from '../app/core/PokerGame';
 import { IPlayer } from '../app/core/Player';
+import { PokerGame } from '../app/core/PokerGame';
 import { ILinkNode } from '../utils/Link';
 
 export interface IGameRoom {

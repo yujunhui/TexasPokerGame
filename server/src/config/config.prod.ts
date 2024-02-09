@@ -1,5 +1,5 @@
+import { MidwayAppInfo, MidwayConfig } from '@midwayjs/core';
 import { EggAppConfig, PowerPartial } from 'egg';
-import { MidwayConfig, MidwayAppInfo } from '@midwayjs/core';
 
 export default (appInfo: MidwayAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;

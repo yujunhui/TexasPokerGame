@@ -22,10 +22,10 @@
   </div>
 </template>
 <script lang="ts">
+import cookie from 'js-cookie';
+import Component from 'vue-class-component';
 import { Vue } from 'vue-property-decorator';
 import service from '../service';
-import Component from 'vue-class-component';
-import cookie from 'js-cookie';
 
 @Component
 export default class Login extends Vue {

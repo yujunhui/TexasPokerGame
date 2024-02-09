@@ -1,7 +1,7 @@
-import { Inject, Controller, Get, Post, Provide } from '@midwayjs/core';
+import { Controller, Get, Inject, Post, Provide } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
-import BaseController from '../../lib/baseController';
 import { IRoomService } from '../../interface/IRoom';
+import BaseController from '../../lib/baseController';
 
 @Provide()
 @Controller('/node/game/room')

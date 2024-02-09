@@ -1,15 +1,14 @@
 'use strict';
-import BaseSocketController from '../../../lib/baseSocketController';
-import { IRoomInfo, ISit } from '../../../interface/IGameRoom';
-import { EGameStatus, PokerGame } from '../../core/PokerGame';
-import { IPlayer } from '../../core/Player';
-import { ILinkNode, Link } from '../../../utils/Link';
-import { IGame } from '../../../interface/IGame';
-import { ICommandRecord } from '../../../interface/ICommandRecord';
-import { IPlayerDTO } from '../../../interface/IPlayer';
-import { Online, OnlineAction, P2PAction } from '../../../utils/constant';
 import { EggLogger } from 'egg';
-import { Player } from '../../core/Player';
+import { ICommandRecord } from '../../../interface/ICommandRecord';
+import { IGame } from '../../../interface/IGame';
+import { IRoomInfo, ISit } from '../../../interface/IGameRoom';
+import { IPlayerDTO } from '../../../interface/IPlayer';
+import BaseSocketController from '../../../lib/baseSocketController';
+import { ILinkNode, Link } from '../../../utils/Link';
+import { Online, OnlineAction, P2PAction } from '../../../utils/constant';
+import { IPlayer } from '../../core/Player';
+import { EGameStatus, PokerGame } from '../../core/PokerGame';
 
 class GameController extends BaseSocketController {
   private async getSitDownPlayer(roomInfo: IRoomInfo): Promise<IPlayer[]> {

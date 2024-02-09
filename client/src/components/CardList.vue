@@ -17,9 +17,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapCard } from '@/utils/map';
 import cardStyle from '@/components/CardStyle.vue';
+import { mapCard } from '@/utils/map';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
   components: {
