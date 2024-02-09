@@ -6,8 +6,8 @@ services:
     platform: linux/x86_64
     image: mysql:5.7
     restart: unless-stopped
-    ports:
-      - "3306:3306"
+    expose:
+      - 3306
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: poker
@@ -25,8 +25,8 @@ services:
     image: redis
     command: /bin/sh -c 'redis-server --appendonly yes --requirepass 123456'
     restart: unless-stopped
-    ports:
-      - "6379:6379"
+    expose:
+      - 6379
     networks:
       - app-network
 
@@ -37,8 +37,6 @@ services:
       args:
         # DO NOT forgot to update Dockerfile
         NODE_ENV: production
-        VUE_APP_API_IP: adli.asuscomm.com
-        VUE_APP_API_PORT: 1111
         IDENTIFY_VERSION_KEY: ${IDENTIFY_VERSION_KEY}
     container_name: "dzp-nginx"
     restart: always
