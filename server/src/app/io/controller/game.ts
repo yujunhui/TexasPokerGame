@@ -353,8 +353,8 @@ class GameController extends BaseSocketController {
       console.log(userInfo, 'userInfo------', player);
       const isGaming = !!roomInfo.game;
       if (player) {
-        // player count not 0, can not buy in
-        if (player.counter !== 0) {
+        // buyin limit, must greater than big blind
+        if (player.counter > roomInfo.config.smallBlind * 2) {
           return;
         }
         if (roomInfo.game) {

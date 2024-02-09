@@ -240,7 +240,7 @@ export default class Game extends Vue {
   }
 
   get buyInSize() {
-    if (this.currentCounter === 0) {
+    if (this.currentCounter <= this.baseSize * 2) {
       return this.baseSize * MaxBuyInFactor;
     }
     return 0;
