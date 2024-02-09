@@ -24,9 +24,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
-import msgList from '@/components/msgList.vue';
 import VoiceRecorder from '@/components/VoiceRecorder.vue';
+import msgList from '@/components/msgList.vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 const PRESET_STORE_KEY = 'msg-presets';
 

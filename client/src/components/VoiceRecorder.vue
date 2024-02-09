@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import Recorder from 'recorder-core';
 import 'recorder-core/src/engine/mp3';
 import 'recorder-core/src/engine/mp3-engine';
+import { Component, Vue } from 'vue-property-decorator';
 // 可选的扩展
 import 'recorder-core/src/extensions/waveview';
 

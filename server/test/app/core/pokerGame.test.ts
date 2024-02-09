@@ -1,6 +1,5 @@
 import { PokerGame } from '../../../src/app/core/PokerGame';
 // @ts-ignore
-import { expect } from 'chai';
 import { IPlayer } from '../../../src/app/core/Player';
 
 describe('test/app/core/pokerGame.test.ts', () => {

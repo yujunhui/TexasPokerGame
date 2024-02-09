@@ -1,7 +1,7 @@
+import { IResult, ResultCode } from '@/interface/IResult';
+import origin from '@/utils/origin';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 import cookie from 'js-cookie';
-import origin from '@/utils/origin';
-import { ResultCode, IResult } from '@/interface/IResult';
 
 const request = async ({ method = 'post' as Method, url = '', body = {}, timeout = 8000 }): Promise<IResult> => {
   if (!url) {

@@ -1,7 +1,7 @@
-import { Inject, Controller, Post, Provide, Plugin } from '@midwayjs/core';
+import { Controller, Inject, Plugin, Post, Provide } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
-import BaseController from '../../lib/baseController';
 import { IUserService } from '../../interface/service/IUserService';
+import BaseController from '../../lib/baseController';
 
 @Provide()
 @Controller('/node/user')

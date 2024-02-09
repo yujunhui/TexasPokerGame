@@ -1,6 +1,6 @@
-import { IPlayerDTO, IPlayerService, UpdatePlayerDTO } from '../interface/IPlayer';
 import { Inject, Plugin, Provide } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
+import { IPlayerDTO, IPlayerService, UpdatePlayerDTO } from '../interface/IPlayer';
 
 @Provide('PlayerRecordService')
 export class PlayerService implements IPlayerService {

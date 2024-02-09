@@ -42,11 +42,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { IPlayer } from '@/interface/IPlayer';
-import Player from './Player.vue';
 import CardList from '@/components/CardList.vue';
 import { IGameRecord } from '@/interface/IGameRecord';
+import { IPlayer } from '@/interface/IPlayer';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Player from './Player.vue';
 
 @Component({
   components: {

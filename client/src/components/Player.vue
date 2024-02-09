@@ -30,9 +30,9 @@
 </template>
 
 <script lang="ts">
+import { PokerStyle } from '@/utils/PokerStyle';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import cardList from './CardList.vue';
-import { PokerStyle } from '@/utils/PokerStyle';
 
 @Component({
   components: {

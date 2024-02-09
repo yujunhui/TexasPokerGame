@@ -1,8 +1,8 @@
 import { Inject, Plugin, Provide } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
+import { IAccountInfo } from '../interface/IAccountInfo';
 import { IUser } from '../interface/IUser';
 import { IUserService } from '../interface/service/IUserService';
-import { IAccountInfo } from '../interface/IAccountInfo';
 
 @Provide('UserService')
 export class UserService implements IUserService {

@@ -1,11 +1,11 @@
-import BaseService from '../lib/baseService';
-import { Inject, Provide, Plugin, Config } from '@midwayjs/core';
+import { Config, Inject, Plugin, Provide } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
 import { IAccountInfo } from '../interface/IAccountInfo';
-import { IAccountService } from '../interface/service/IAccountService';
 import { ILoginResult } from '../interface/ILoginResult';
-import { IUserService } from '../interface/service/IUserService';
 import { IUser } from '../interface/IUser';
+import { IAccountService } from '../interface/service/IAccountService';
+import { IUserService } from '../interface/service/IUserService';
+import BaseService from '../lib/baseService';
 
 @Provide('AccountService')
 export class AccountService extends BaseService implements IAccountService {

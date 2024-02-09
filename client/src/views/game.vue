@@ -93,34 +93,34 @@
 </template>
 
 <script lang="ts">
-import { Ref, Vue, Watch } from 'vue-property-decorator';
-import Component from 'vue-class-component';
-import io from 'socket.io-client';
-import cookie from 'js-cookie';
-import sitList from '../components/SitList.vue';
-import commonCard from '../components/CommonCard.vue';
-import { IPlayer } from '@/interface/IPlayer';
-import { IPlayersStatus } from '@/interface/IPlayersStatus';
-import { ILinkNode, Link } from '@/utils/Link';
-import ISit from '../interface/ISit';
-import BuyIn from '../components/BuyIn.vue';
-import toast from '../components/Toast.vue';
-import record from '../components/Record.vue';
-import notice from '../components/Notice.vue';
-import iAudio from '../components/Audio.vue';
-import sendMsg from '../components/SendMsg.vue';
-import SpeakSettings from '@/components/SpeakSettings.vue';
 import animation from '@/components/Animation.vue';
-import actionDialog from '../components/Action.vue';
-import { PokerStyle } from '@/utils/PokerStyle';
-import origin from '../utils/origin';
-import { IRoom } from '@/interface/IRoom';
-import service from '../service';
 import gameRecord from '@/components/GameRecord.vue';
 import Loader from '@/components/Loader.vue';
+import SpeakSettings from '@/components/SpeakSettings.vue';
 import { IGameRecord } from '@/interface/IGameRecord';
-import { Online, OnlineAction, P2PAction, MaxBuyInFactor } from '@/utils/constant';
+import { IPlayer } from '@/interface/IPlayer';
+import { IPlayersStatus } from '@/interface/IPlayersStatus';
+import { IRoom } from '@/interface/IRoom';
+import { ILinkNode, Link } from '@/utils/Link';
+import { PokerStyle } from '@/utils/PokerStyle';
+import { MaxBuyInFactor, Online, OnlineAction, P2PAction } from '@/utils/constant';
 import { Howl } from 'howler';
+import cookie from 'js-cookie';
+import io from 'socket.io-client';
+import Component from 'vue-class-component';
+import { Ref, Vue, Watch } from 'vue-property-decorator';
+import actionDialog from '../components/Action.vue';
+import iAudio from '../components/Audio.vue';
+import BuyIn from '../components/BuyIn.vue';
+import commonCard from '../components/CommonCard.vue';
+import notice from '../components/Notice.vue';
+import record from '../components/Record.vue';
+import sendMsg from '../components/SendMsg.vue';
+import sitList from '../components/SitList.vue';
+import toast from '../components/Toast.vue';
+import ISit from '../interface/ISit';
+import service from '../service';
+import origin from '../utils/origin';
 
 export enum ECommand {
   ALL_IN = 'allin',

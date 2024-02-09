@@ -1,7 +1,7 @@
 import { Context } from '@midwayjs/web';
 import { IGameRoom } from '../../../interface/IGameRoom';
-import { IPlayer } from '../../core/Player';
 import { Online, OnlineAction, P2PAction } from '../../../utils/constant';
+import { IPlayer } from '../../core/Player';
 
 export default () => {
   function sendMsgToClients({

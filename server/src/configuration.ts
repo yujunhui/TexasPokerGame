@@ -1,6 +1,6 @@
 import { App, Configuration, ILifeCycle } from '@midwayjs/core';
-import { join } from 'path';
 import * as egg from '@midwayjs/web';
+import { join } from 'path';
 
 @Configuration({
   imports: [egg],

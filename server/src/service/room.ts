@@ -1,7 +1,7 @@
 import { Inject, Plugin, Provide } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
-import { IRoom, IRoomService, IRoomBasicInfo } from '../interface/IRoom';
 import { IGameRoom } from '../interface/IGameRoom';
+import { IRoom, IRoomBasicInfo, IRoomService } from '../interface/IRoom';
 
 const KeyPrefix = 'room';
 

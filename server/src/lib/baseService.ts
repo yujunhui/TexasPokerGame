@@ -1,6 +1,6 @@
+import { Config, Inject } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
 import { IFetchOptions } from '../interface/IFetchOptions';
-import { Inject, Config } from '@midwayjs/core';
 
 export default class BaseService {
   @Inject()

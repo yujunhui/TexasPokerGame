@@ -44,11 +44,11 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
-import service from '../service';
 import Component from 'vue-class-component';
+import { Vue } from 'vue-property-decorator';
 import toast from '../components/Toast.vue';
 import XInput from '../components/XInput.vue';
+import service from '../service';
 
 @Component({
   components: {

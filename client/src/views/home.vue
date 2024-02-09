@@ -74,13 +74,13 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
-import Component from 'vue-class-component';
 import gameRecord from '@/components/GameRecord.vue';
-import service from '../service';
-import cookie from 'js-cookie';
 import { IGameRecord } from '@/interface/IGameRecord';
 import { IRoomBasicInfo } from '@/interface/IRoom';
+import cookie from 'js-cookie';
+import Component from 'vue-class-component';
+import { Vue } from 'vue-property-decorator';
+import service from '../service';
 
 @Component({
   components: {

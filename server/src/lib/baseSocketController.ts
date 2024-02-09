@@ -1,8 +1,8 @@
 import { Controller } from 'egg';
-import { IGameRoom, IRoomInfo } from '../interface/IGameRoom';
 import { IPlayer } from '../app/core/Player';
-import { AdapterType, Online, OnlineAction } from '../utils/constant';
+import { IGameRoom, IRoomInfo } from '../interface/IGameRoom';
 import * as FR from '../service/fullRecord';
+import { AdapterType, Online, OnlineAction } from '../utils/constant';
 
 export default class BaseSocketController extends Controller {
   public app = this.ctx.app as any;
