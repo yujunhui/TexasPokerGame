@@ -83,8 +83,6 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
-            VUE_APP_API_IP=${{ vars.VUE_APP_API_IP }}
-            VUE_APP_API_PORT=${{ vars.VUE_APP_API_PORT }}
             IDENTIFY_VERSION_KEY=${{ github.sha }}
           push: true
           tags: |
