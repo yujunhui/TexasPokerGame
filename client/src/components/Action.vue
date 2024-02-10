@@ -17,11 +17,7 @@
           ALLIN
         </span>
       </div>
-      <div>
-        <iAudio :play="playClick && audioStatus" type="click"></iAudio>
-        <iAudio :play="playFold && audioStatus" type="fold"></iAudio>
-        <iAudio :play="playRaise && audioStatus" type="raise"></iAudio>
-      </div>
+      <iAudio :playType="audioStatus && playAudioType"></iAudio>
     </div>
 
     <div class="action-other-size" v-if="isRaise">
@@ -70,16 +66,12 @@ export default class Action extends Vue {
   public isRaise = false;
   public moreSize: number = 0;
   public actioned = false;
-  public playClick = false;
-  public playRaise = false;
-  public playFold = false;
+  public playAudioType = '';
 
   @Watch('isAction')
   public wAction(val: boolean) {
     this.actioned = !val;
-    this.playClick = false;
-    this.playRaise = false;
-    this.playFold = false;
+    this.playAudioType = '';
   }
 
   @Watch('moreSize')
@@ -112,10 +104,10 @@ export default class Action extends Vue {
 
   public action(command: string) {
     if (command.indexOf('raise') > -1 || command === 'allin' || command === 'call') {
-      this.playRaise = true;
+      this.playAudioType = 'raise';
     }
     if (command === 'fold' || command === 'check') {
-      this.playFold = true;
+      this.playAudioType = 'fold';
     }
     if (!this.actioned) {
       this.actioned = true;
