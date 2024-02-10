@@ -79,16 +79,10 @@
       <record :players="players" v-model="showRecord" v-show="showRecord"></record>
     </Transition>
     <sendMsg @send="sendMsgHandle" @sendAudio="sendAudio" :msg-list="msgListReverse"></sendMsg>
-    <iAudio :play="audioStatus && incomeAudioType === 'income'" type="income"></iAudio>
     <iAudio
-      v-for="audioType in raiseAudioTypes"
-      v-bind:play="audioStatus && raiseAudioType === audioType"
-      v-bind:type="audioType"
-    ></iAudio>
-    <iAudio
-      v-for="audioType in allinAudioTypes"
-      v-bind:play="audioStatus && allinAudioType === audioType"
-      v-bind:type="audioType"
+      :playIncomeAudio="audioStatus && playIncomeAudioStatus"
+      :playRaiseAudio="audioStatus && playRaiseAudioStatus"
+      :playAllinAudio="audioStatus && playAllinAudioStatus"
     ></iAudio>
     <gameRecord
       v-model="showCommandRecord"
@@ -310,13 +304,11 @@ export default class Game extends Vue {
   };
   public messageList: any[] = [];
   public showRecord = false;
-  public incomeAudioType = '';
-  public raiseAudioType = '';
-  public allinAudioType = '';
+  public playIncomeAudioStatus = false;
+  public playRaiseAudioStatus = false;
+  public playAllinAudioStatus = false;
   public playersStatus: IPlayersStatus = {};
   public showSpeakSettings = false;
-  public raiseAudioTypes = ['raise-ms-xiaoxiao-raise', 'raise-ms-xiaobei-dani'];
-  public allinAudioTypes = ['allin-ms-xiaoxiao-allin'];
 
   @Watch('latestSpecialAction')
   public privateActionNoticeChange(newValue: ILatestActionData, oldValue: ILatestActionData) {
@@ -467,24 +459,10 @@ export default class Game extends Vue {
     window.speechSynthesis.speak(utterance);
   }
 
-  public playIncomeAudio() {
-    this.incomeAudioType = 'income';
+  public setAudioStatus(prop: 'playIncomeAudioStatus' | 'playRaiseAudioStatus' | 'playAllinAudioStatus') {
+    this[prop] = true;
     setTimeout(() => {
-      this.incomeAudioType = '';
-    }, 1000);
-  }
-
-  public playRaiseAudio() {
-    this.raiseAudioType = this.raiseAudioTypes[Math.floor(Math.random() * this.raiseAudioTypes.length)];
-    setTimeout(() => {
-      this.raiseAudioType = '';
-    }, 1000);
-  }
-
-  public playAllinAudio() {
-    this.allinAudioType = this.allinAudioTypes[Math.floor(Math.random() * this.allinAudioTypes.length)];
-    setTimeout(() => {
-      this.allinAudioType = '';
+      this[prop] = false;
     }, 1000);
   }
 
@@ -653,7 +631,7 @@ export default class Game extends Vue {
             }
           });
         });
-        this.playIncomeAudio();
+        this.setAudioStatus('playIncomeAudioStatus');
       }
 
       if (msg.action === OnlineAction.NewGame) {
@@ -683,10 +661,10 @@ export default class Game extends Vue {
         const { latestAction, userId: actionUserId } = data;
         if (actionUserId !== this.userInfo.userId) {
           if (latestAction.includes(ECommand.RAISE) || latestAction.includes(ECommand.BET)) {
-            this.playRaiseAudio();
+            this.setAudioStatus('playRaiseAudioStatus');
           }
           if (latestAction.includes(ECommand.ALL_IN)) {
-            this.playAllinAudio();
+            this.setAudioStatus('playAllinAudioStatus');
           }
         }
       }

@@ -1,31 +1,7 @@
 <template>
   <div class="audio-container">
-    <audio ref="click" controls>
-      <source src="../assets/mp3/click.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-    <audio ref="raise" controls>
-      <source src="../assets/mp3/raise.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-    <audio ref="raise-ms-xiaoxiao-raise" controls>
-      <source src="../assets/mp3/raise-ms-xiaoxiao-raise.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-    <audio ref="raise-ms-xiaobei-dani" controls>
-      <source src="../assets/mp3/raise-ms-xiaobei-dani.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-    <audio ref="fold" controls>
-      <source src="../assets/mp3/fold.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-    <audio ref="income" controls>
-      <source src="../assets/mp3/income.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-    <audio ref="allin-ms-xiaoxiao-allin" controls>
-      <source src="../assets/mp3/allin-ms-xiaoxiao-allin.mp3" type="audio/mpeg" />
+    <audio v-for="data in audioData" :ref="data.type" controls>
+      <source :src="data.src" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
   </div>
@@ -36,13 +12,66 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component
 export default class Audio extends Vue {
-  @Prop() public type!: string;
-  @Prop() public play!: boolean;
-  @Watch('play')
-  public wPlay(val: boolean) {
-    if (val) {
-      (this.$refs[this.type] as HTMLAudioElement).play();
+  @Prop() public playType!: string;
+  @Prop() public playIncomeAudio!: boolean;
+  @Prop() public playRaiseAudio!: boolean;
+  @Prop() public playAllinAudio!: boolean;
+
+  public basicAudioData = [
+    { type: 'click', src: require('../assets/mp3/click.mp3') },
+    { type: 'raise', src: require('../assets/mp3/raise.mp3') },
+    { type: 'fold', src: require('../assets/mp3/fold.mp3') },
+  ];
+  public incomeAudioData = [{ type: 'income', src: require('../assets/mp3/income.mp3') }];
+  public raiseAudioData = [
+    { type: 'raise-ms-xiaoxiao-raise', src: require('../assets/mp3/raise-ms-xiaoxiao-raise.mp3') },
+    { type: 'raise-ms-xiaobei-dani', src: require('../assets/mp3/raise-ms-xiaobei-dani.mp3') },
+  ];
+  public allinAudioData = [
+    { type: 'allin-ms-xiaoxiao-allin', src: require('../assets/mp3/allin-ms-xiaoxiao-allin.mp3') },
+  ];
+  public audioData = [...this.basicAudioData, ...this.raiseAudioData, ...this.allinAudioData];
+
+  @Watch('playType')
+  public playWatcher(val: string) {
+    if (!val || !this.audioData.map((e) => e.type).includes(val)) {
+      return;
     }
+    this.playSpecifyType(val);
+  }
+
+  @Watch('playIncomeAudio')
+  public playIncomeAudioWatcher(val: boolean) {
+    if (!val) {
+      return;
+    }
+    this.playAudio('incomeAudioData');
+  }
+
+  @Watch('playRaiseAudio')
+  public playRaiseAudioWatcher(val: boolean) {
+    if (!val) {
+      return;
+    }
+    this.playAudio('raiseAudioData');
+  }
+
+  @Watch('playAllinAudio')
+  public playAllinAudioWatcher(val: boolean) {
+    if (!val) {
+      return;
+    }
+    this.playAudio('allinAudioData');
+  }
+
+  private playAudio(prop: 'incomeAudioData' | 'raiseAudioData' | 'allinAudioData') {
+    const types = this[prop].map((e) => e.type);
+    const randomType = types[Math.floor(Math.random() * types.length)];
+    this.playSpecifyType(randomType);
+  }
+
+  private playSpecifyType(typ: string) {
+    (this.$refs[typ] as HTMLAudioElement[])[0].play();
   }
 }
 </script>
