@@ -72,9 +72,9 @@ class GameController extends BaseSocketController {
   /**
    * Play game
    */
-  async playGame() {
+  async playGame(xhr?: any) {
     try {
-      const roomInfo = await this.getRoomInfo();
+      const roomInfo = this.getRoomInfo();
       const gameService = await this.app.applicationContext.getAsync('GameService');
       const PlayerService = await this.app.applicationContext.getAsync('PlayerRecordService');
       const sitDownPlayer = await this.getSitDownPlayer(roomInfo);
@@ -211,8 +211,11 @@ class GameController extends BaseSocketController {
         roomInfo.game.play();
         // roomInfo.game.startActionRound();
         console.log('hand card', roomInfo.game.allPlayer);
+        if (xhr) {
+          this.adapter(Online, OnlineAction.FirstGame, {});
+        }
         // update counter, pot, status
-        await this.updateGameInfo();
+        this.updateGameInfo();
         // add game record
         const gameRecord: IGame = {
           roomNumber: this.roomNumber,

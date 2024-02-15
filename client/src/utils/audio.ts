@@ -2,10 +2,9 @@ import { Howl } from 'howler';
 import { AudioData } from './audioData';
 
 const loadData = {
-  basic: AudioData.filter((e) => e.enable && e.type === 'basic' && e.group.includes('basic')),
-  income: AudioData.filter((e) => e.enable && e.type === 'basic' && e.group.includes('income')),
-  raise: AudioData.filter((e) => e.enable && e.type === 'simple' && e.group.includes('raise')),
-  allin: AudioData.filter((e) => e.enable && e.type === 'simple' && e.group.includes('allin')),
+  basic: AudioData.filter((e) => e.enable && e.type === 'basic'),
+  raise: AudioData.filter((e) => e.enable && e.type === 'dialogue' && e.group.includes('raise')),
+  allin: AudioData.filter((e) => e.enable && e.type === 'dialogue' && e.group.includes('allin')),
   callWhenAllin: AudioData.filter((e) => e.enable && e.type === 'dialogue' && e.group.includes('callWhenAllin')),
   foldWhenAllin: AudioData.filter((e) => e.enable && e.type === 'dialogue' && e.group.includes('foldWhenAllin')),
   clearCounter: AudioData.filter((e) => e.enable && e.type === 'dialogue' && e.group.includes('clearCounter')),
@@ -14,7 +13,6 @@ const loadData = {
 
 const allAudioData = [
   ...loadData.basic,
-  ...loadData.income,
   ...loadData.raise,
   ...loadData.allin,
   ...loadData.callWhenAllin,

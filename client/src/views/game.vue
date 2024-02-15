@@ -613,14 +613,18 @@ export default class Game extends Vue {
               p.income = winner.income;
             }
           });
+          if (this.audioStatus && this.userInfo.userId === winner.userId) {
+            CustomAudio.playIncome();
+          }
         });
-        if (this.audioStatus) {
-          CustomAudio.playIncome();
-        }
       }
 
       if (msg.action === OnlineAction.NewGame) {
         this.init();
+      }
+
+      if (msg.action === OnlineAction.FirstGame) {
+        CustomAudio.playGameStart();
       }
 
       if (msg.action === OnlineAction.Pause) {
@@ -753,7 +757,6 @@ export default class Game extends Vue {
   public play() {
     if (this.players.length >= 2) {
       this.gaming = true;
-      CustomAudio.playGameStart();
       this.emit('playGame');
     } else {
       console.log('no enough player');

@@ -14,7 +14,7 @@ export const AudioData: AudioData = [
   { name: 'click', enable: true, type: 'basic', group: ['basic'], src: 'audios/basic/click.mp3' },
   { name: 'raise', enable: true, type: 'basic', group: ['basic'], src: 'audios/basic/raise.mp3' },
   { name: 'fold', enable: true, type: 'basic', group: ['basic'], src: 'audios/basic/fold.mp3' },
-  { name: 'income', enable: true, type: 'basic', group: ['income'], src: 'audios/basic/income.mp3' },
+  { name: 'income', enable: true, type: 'basic', group: ['basic'], src: 'audios/basic/income.mp3' },
   {
     name: 'raise-ms-xiaoxiao-raise',
     enable: true,
