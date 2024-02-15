@@ -19,6 +19,8 @@ export enum OnlineAction {
   Pause = 'pause',
   Players = 'players',
   SitList = 'sitList',
+  /** 代表第一把开局的游戏 */
+  FirstGame = 'firstGame',
 }
 
 /**
