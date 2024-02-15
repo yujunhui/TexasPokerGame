@@ -79,11 +79,6 @@
       <record :players="players" v-model="showRecord" v-show="showRecord"></record>
     </Transition>
     <sendMsg @send="sendMsgHandle" @sendAudio="sendAudio" :msg-list="msgListReverse"></sendMsg>
-    <iAudio
-      :playIncomeAudio="audioStatus && playIncomeAudioStatus"
-      :playRaiseAudio="audioStatus && playRaiseAudioStatus"
-      :playAllinAudio="audioStatus && playAllinAudioStatus"
-    ></iAudio>
     <gameRecord
       v-model="showCommandRecord"
       :game-list="gameList"
@@ -95,34 +90,34 @@
 </template>
 
 <script lang="ts">
+import actionDialog from '@/components/Action.vue';
 import animation from '@/components/Animation.vue';
+import BuyIn from '@/components/BuyIn.vue';
+import commonCard from '@/components/CommonCard.vue';
 import gameRecord from '@/components/GameRecord.vue';
 import Loader from '@/components/Loader.vue';
+import notice from '@/components/Notice.vue';
+import record from '@/components/Record.vue';
+import sendMsg from '@/components/SendMsg.vue';
+import sitList from '@/components/SitList.vue';
 import SpeakSettings from '@/components/SpeakSettings.vue';
+import toast from '@/components/Toast.vue';
 import { IGameRecord } from '@/interface/IGameRecord';
 import { IPlayer } from '@/interface/IPlayer';
 import { IPlayersStatus } from '@/interface/IPlayersStatus';
 import { IRoom } from '@/interface/IRoom';
+import ISit from '@/interface/ISit';
+import service from '@/service';
 import { ILinkNode, Link } from '@/utils/Link';
 import { PokerStyle } from '@/utils/PokerStyle';
+import * as CustomAudio from '@/utils/audio';
 import { MaxBuyInFactor, Online, OnlineAction, P2PAction } from '@/utils/constant';
+import origin from '@/utils/origin';
 import { Howl } from 'howler';
 import cookie from 'js-cookie';
 import io from 'socket.io-client';
 import Component from 'vue-class-component';
 import { Ref, Vue, Watch } from 'vue-property-decorator';
-import actionDialog from '../components/Action.vue';
-import iAudio from '../components/Audio.vue';
-import BuyIn from '../components/BuyIn.vue';
-import commonCard from '../components/CommonCard.vue';
-import notice from '../components/Notice.vue';
-import record from '../components/Record.vue';
-import sendMsg from '../components/SendMsg.vue';
-import sitList from '../components/SitList.vue';
-import toast from '../components/Toast.vue';
-import ISit from '../interface/ISit';
-import service from '../service';
-import origin from '../utils/origin';
 
 export enum ECommand {
   ALL_IN = 'allin',
@@ -160,7 +155,6 @@ const ACTION_TIME = 30;
     record,
     gameRecord,
     notice,
-    iAudio,
     actionDialog,
     sendMsg,
     animation,
@@ -229,7 +223,6 @@ export default class Game extends Vue {
 
   // 获取当前用户的筹码数(买入+赢)
   get currentCounter() {
-    const player = this.players.find((u: IPlayer) => this.userInfo.userId === u.userId);
     return this.currPlayer?.counter || 0;
   }
 
@@ -304,9 +297,6 @@ export default class Game extends Vue {
   };
   public messageList: any[] = [];
   public showRecord = false;
-  public playIncomeAudioStatus = false;
-  public playRaiseAudioStatus = false;
-  public playAllinAudioStatus = false;
   public playersStatus: IPlayersStatus = {};
   public showSpeakSettings = false;
 
@@ -457,13 +447,6 @@ export default class Game extends Vue {
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.voice = voice; // 使用用户选择的语音
     window.speechSynthesis.speak(utterance);
-  }
-
-  public setAudioStatus(prop: 'playIncomeAudioStatus' | 'playRaiseAudioStatus' | 'playAllinAudioStatus') {
-    this[prop] = true;
-    setTimeout(() => {
-      this[prop] = false;
-    }, 1000);
   }
 
   public PokeStyle(cards: string[]) {
@@ -631,7 +614,9 @@ export default class Game extends Vue {
             }
           });
         });
-        this.setAudioStatus('playIncomeAudioStatus');
+        if (this.audioStatus) {
+          CustomAudio.playIncome();
+        }
       }
 
       if (msg.action === OnlineAction.NewGame) {
@@ -659,12 +644,13 @@ export default class Game extends Vue {
         const data = msg.data as ILatestActionData;
         this.currentRoundActions.push(data);
         const { latestAction, userId: actionUserId } = data;
-        if (actionUserId !== this.userInfo.userId) {
+        if (actionUserId !== this.userInfo.userId && this.audioStatus) {
+          // play custom audio
           if (latestAction.includes(ECommand.RAISE) || latestAction.includes(ECommand.BET)) {
-            this.setAudioStatus('playRaiseAudioStatus');
+            CustomAudio.playRaiseRandomly();
           }
           if (latestAction.includes(ECommand.ALL_IN)) {
-            this.setAudioStatus('playAllinAudioStatus');
+            CustomAudio.playAllinRandomly();
           }
         }
       }
@@ -767,6 +753,7 @@ export default class Game extends Vue {
   public play() {
     if (this.players.length >= 2) {
       this.gaming = true;
+      CustomAudio.playGameStart();
       this.emit('playGame');
     } else {
       console.log('no enough player');
