@@ -17,7 +17,6 @@
           ALLIN
         </span>
       </div>
-      <iAudio :playType="audioStatus && playAudioType"></iAudio>
     </div>
 
     <div class="action-other-size" v-if="isRaise">
@@ -42,14 +41,13 @@
 
 <script lang="ts">
 import { IPlayer } from '@/interface/IPlayer';
+import * as CustomAudio from '@/utils/audio';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import iAudio from './Audio.vue';
 import range from './Range.vue';
 
 @Component({
   components: {
     range,
-    iAudio,
   },
 })
 export default class Action extends Vue {
@@ -66,16 +64,14 @@ export default class Action extends Vue {
   public isRaise = false;
   public moreSize: number = 0;
   public actioned = false;
-  public playAudioType = '';
 
   @Watch('isAction')
   public wAction(val: boolean) {
     this.actioned = !val;
-    this.playAudioType = '';
   }
 
   @Watch('moreSize')
-  public wmoreSize(val: number) {
+  public wMoreSize(val: number) {
     this.moreSize = val > this.currPlayer.counter ? this.currPlayer.counter : val;
   }
 
@@ -103,13 +99,17 @@ export default class Action extends Vue {
   }
 
   public action(command: string) {
-    if (command.indexOf('raise') > -1 || command === 'allin' || command === 'call') {
-      this.playAudioType = 'raise';
-    }
-    if (command === 'fold' || command === 'check') {
-      this.playAudioType = 'fold';
-    }
     if (!this.actioned) {
+      // play the basic custom audio
+      if (this.audioStatus) {
+        if (command.indexOf('raise') > -1 || command === 'allin' || command === 'call') {
+          CustomAudio.playRaise();
+        }
+        if (command === 'fold' || command === 'check') {
+          CustomAudio.playFold();
+        }
+      }
+
       this.actioned = true;
       this.$emit('action', command);
       this.isRaise = false;
