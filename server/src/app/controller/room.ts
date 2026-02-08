@@ -20,7 +20,7 @@ export class RoomController extends BaseController {
       this.success(result);
     } catch (e) {
       this.fail('create room error');
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -32,7 +32,7 @@ export class RoomController extends BaseController {
       this.success({ ...result });
     } catch (e) {
       this.fail('invalid room');
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -43,7 +43,7 @@ export class RoomController extends BaseController {
       this.success({ ...result });
     } catch (e) {
       this.fail('fetch rooms error');
-      console.log(e);
+      console.error(e);
     }
   }
 }

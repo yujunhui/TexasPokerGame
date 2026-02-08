@@ -35,7 +35,6 @@ export class GameRecordController extends BaseController {
       const commandList = await this.commandService.findByGameID(body.gameId);
       const gameList = await this.gameService.findByRoomNumber(body.roomNumber);
       let result: IFindGameRecord;
-      console.log(state, 'user');
       gameList.forEach((g) => {
         if (g.status === EGameOverType.GAME_OVER) {
           const winner = JSON.parse(g.winners || '')[0][0];
@@ -58,7 +57,7 @@ export class GameRecordController extends BaseController {
       });
     } catch (e) {
       this.fail('invalid game record');
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -103,7 +102,7 @@ export class GameRecordController extends BaseController {
       this.success(result);
     } catch (e) {
       this.fail('find self command record error');
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -118,7 +117,7 @@ export class GameRecordController extends BaseController {
       });
     } catch (e) {
       this.fail('create room error');
-      console.log(e);
+      console.error(e);
     }
   }
 }

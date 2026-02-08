@@ -38,10 +38,9 @@ export default () => {
         tick(id, P2PAction.Deny, { type: 'deleted', message: 'room has been deleted' }, nsp, socket);
         return;
       }
-      console.log('play------------', room);
       await next();
     } catch (e) {
-      console.log(e);
+      console.error(e);
       tick(id, P2PAction.Deny, { type: 'critical', message: 'something went wrong' }, nsp, socket);
       throw e;
     }

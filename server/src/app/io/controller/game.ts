@@ -78,7 +78,6 @@ class GameController extends BaseSocketController {
       const gameService = await this.app.applicationContext.getAsync('GameService');
       const PlayerService = await this.app.applicationContext.getAsync('PlayerRecordService');
       const sitDownPlayer = await this.getSitDownPlayer(roomInfo);
-      console.log('roomConfig-------------------', roomInfo.config);
       if (!roomInfo.game) {
         roomInfo.game = null;
         roomInfo.game = new PokerGame({
@@ -88,7 +87,6 @@ class GameController extends BaseSocketController {
           actionRoundComplete: async () => {
             let slidePots: number[] = [];
             if (roomInfo.game) {
-              console.log('come in', roomInfo.game.status);
               if (roomInfo.game.status < 6 && roomInfo.game.playerSize > 1) {
                 // roomInfo.game.sendCard();
                 // roomInfo.game.startActionRound();
@@ -108,7 +106,6 @@ class GameController extends BaseSocketController {
             if (roomInfo.game) {
               // game over
               roomInfo.game.allPlayer.forEach((gamePlayer) => {
-                console.log('player =================== game over', gamePlayer);
                 const player = roomInfo.players.find((p: IPlayer) => p.userId === gamePlayer.userId);
                 const sit = roomInfo.sit.find((s: ISit) => s.player?.userId === gamePlayer.userId);
                 if (player && sit) {
@@ -134,7 +131,6 @@ class GameController extends BaseSocketController {
                   sit.player!.type = '';
                 }
               });
-              console.log('allPlayer =================== game over', roomInfo.game.allPlayer);
               if (roomInfo.game.status === EGameStatus.GAME_OVER) {
                 let winner: any = [
                   [
@@ -196,7 +192,6 @@ class GameController extends BaseSocketController {
                   p.status = -1;
                 }
               });
-              console.log('roomInfo', roomInfo.players);
               roomInfo.sit.forEach((s: ISit) => {
                 if (s.player && s.player.userId === userId) {
                   delete s.player;
@@ -205,12 +200,10 @@ class GameController extends BaseSocketController {
             }
             this.updateFullRecord(command);
             await this.updateGameInfo();
-            console.log('auto Action');
           },
         });
         roomInfo.game.play();
         // roomInfo.game.startActionRound();
-        console.log('hand card', roomInfo.game.allPlayer);
         if (xhr) {
           this.adapter(Online, OnlineAction.FirstGame, {});
         }
@@ -258,7 +251,6 @@ class GameController extends BaseSocketController {
         const commandRecordService = await this.app.applicationContext.getAsync('CommandRecordService');
         const sbRecordResult = await commandRecordService.add(SBCommandRecord);
         const bbRecordResult = await commandRecordService.add(BBCommandRecord);
-        console.log(bbRecordResult, sbRecordResult);
         if (!sbRecordResult.succeed || !bbRecordResult.succeed) {
           throw 'command add error';
         }
@@ -281,14 +273,11 @@ class GameController extends BaseSocketController {
             s.player?.userId !== roomInfo.sitLink?.node.userId,
         );
       })[0];
-      console.log('dealer -------', dealer);
       roomInfo.game = null;
       // init player status
       roomInfo.players.forEach((p) => {
         p.status = 0;
       });
-      console.log('sit =======', roomInfo.sit);
-      console.log('roomInfo =======', roomInfo);
       roomInfo.sit.forEach((s: ISit) => {
         if (s.player) {
           const player = roomInfo.players.find((p) => p.userId === s.player?.userId);
@@ -302,7 +291,6 @@ class GameController extends BaseSocketController {
             s.player.winCountAtPreFlop = player.winCountAtPreFlop;
             s.player.raiseCountAtPreFlop = player.raiseCountAtPreFlop;
             s.player.walksCountAtPreFlop = player.walksCountAtPreFlop;
-            console.log('cal reBuy ===============================', s.player, player.reBuy);
             player.reBuy = 0;
             s.player.reBuy = 0;
             // init player delay count
@@ -322,18 +310,15 @@ class GameController extends BaseSocketController {
       let link: ILinkNode<IPlayer> | null = new Link<IPlayer>(players as IPlayer[]).link;
       if (players.length >= 2) {
         // init sit link
-        console.log(players, 'players===========');
         while (link?.node.userId !== dealer?.userId) {
           link = link?.next || null;
         }
         roomInfo.sitLink = link;
-        console.log('dealer ===================', dealer, link);
         // new game
         this.adapter(Online, OnlineAction.NewGame, {});
         await this.playGame();
       } else {
         roomInfo.sitLink = null;
-        console.log('come in only one player');
         // player not enough
         this.adapter(Online, OnlineAction.Pause, {
           players: roomInfo.players,
@@ -341,7 +326,7 @@ class GameController extends BaseSocketController {
         });
       }
     } catch (e) {
-      console.log(e + 'restart ex');
+      console.error(e);
     }
   }
 
@@ -353,7 +338,6 @@ class GameController extends BaseSocketController {
       const { buyInSize } = payload;
       // find current player
       const player = roomInfo.players.find((p: IPlayer) => p.userId === userInfo.userId);
-      console.log(userInfo, 'userInfo------', player);
       const isGaming = !!roomInfo.game;
       if (player) {
         // buyin limit, must greater than big blind
@@ -366,14 +350,11 @@ class GameController extends BaseSocketController {
           if (inTheGame) {
             player.reBuy += Number(buyInSize);
             player.buyIn += Number(buyInSize);
-            console.log('come in');
           } else {
             player.buyIn += Number(buyInSize);
             player.counter += Number(buyInSize);
           }
-          console.log('user in the game------', player);
         } else {
-          console.log('user not in the game------', player);
           player.buyIn += Number(buyInSize);
           player.counter += Number(buyInSize);
         }
@@ -385,15 +366,13 @@ class GameController extends BaseSocketController {
         };
         roomInfo.players.push(player);
       }
-      console.log(player, 'buy in player', roomInfo.players);
       if (!isGaming) {
         this.adapter(Online, OnlineAction.Players, {
           players: roomInfo.players,
         });
-        console.log('ont in the game', player);
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -402,7 +381,6 @@ class GameController extends BaseSocketController {
       const userInfo: IPlayer = await this.getUserInfo();
       const roomInfo: IRoomInfo = await this.getRoomInfo();
       const player = roomInfo.players.find((p: IPlayer) => p.nickName === userInfo.nickName);
-      console.log(userInfo, 'userInfo------');
       if (player && roomInfo.game) {
         const gamePlayer = roomInfo.game.allPlayer.find((p) => player.socketId === p.socketId);
         if (gamePlayer) {
@@ -413,14 +391,13 @@ class GameController extends BaseSocketController {
             },
             { client: player.socketId },
           );
-          console.log(msg, 'game msg---------');
           this.nsp.emit(player.socketId, msg);
         }
       } else {
         throw 'game over';
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -429,20 +406,17 @@ class GameController extends BaseSocketController {
       const { payload } = this.message;
       const sitList = payload.sitList;
       const roomInfo = await this.getRoomInfo();
-      console.log('sitList=============', sitList);
-      console.log('roomInfo=============', roomInfo);
       roomInfo.sit = sitList;
       this.adapter(Online, OnlineAction.SitList, {
         sitList,
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
   async standUp() {
     try {
-      console.log('stand up');
       const userInfo: IPlayer = await this.getUserInfo();
       const roomInfo = await this.getRoomInfo();
       roomInfo.sit.forEach((s: ISit) => {
@@ -452,7 +426,7 @@ class GameController extends BaseSocketController {
       });
       await this.updateGameInfo();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -461,17 +435,14 @@ class GameController extends BaseSocketController {
       const { payload } = this.message;
       const userInfo: IPlayer = await this.getUserInfo();
       const roomInfo = await this.getRoomInfo();
-      console.log('delayTime: ', payload.command);
-      console.log('delayTime: ', roomInfo.game && roomInfo.game.currPlayer.node, userInfo);
       if (roomInfo.game && roomInfo.game.currPlayer.node.userId === userInfo.userId) {
         roomInfo.game.delayActionTime();
-        console.log('delayTime: ', roomInfo.game && roomInfo.game.currPlayer.node, userInfo);
         this.adapter(Online, OnlineAction.DelayTime, {
           actionEndTime: roomInfo.game.actionEndTime,
         });
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -480,8 +451,6 @@ class GameController extends BaseSocketController {
       const { payload } = this.message;
       const userInfo: IPlayer = await this.getUserInfo();
       const roomInfo = await this.getRoomInfo();
-      console.log('action: ', payload.command);
-      console.log('action: ', roomInfo.game && roomInfo.game.currPlayer.node, userInfo);
       this.adapter(Online, OnlineAction.LatestAction, {
         latestAction: payload.command,
         userId: userInfo.userId,
@@ -528,10 +497,8 @@ class GameController extends BaseSocketController {
             }
           });
         }
-        console.log('fold ===============', roomInfo.players, roomInfo.game.allPlayer);
         // todo notice next player action
         this.updateGameInfo();
-        console.log('curr player', roomInfo.game.currPlayer.node);
         // add game record
         commandRecord.pot = roomInfo.game?.pot || 0;
         commandRecord.counter = currPlayer.counter;
@@ -541,7 +508,7 @@ class GameController extends BaseSocketController {
         throw 'action flow incorrect';
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 }

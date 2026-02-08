@@ -88,7 +88,6 @@ export class PokerGame {
     this.actionRoundComplete = config.actionRoundComplete;
     this.gameOverCallBack = config.gameOverCallBack;
     this.autoActionCallBack = config.autoActionCallBack;
-    console.log(config.isShort, 'poker--------------');
     this.isShort = config.isShort;
     this.poker = new Poker(this.isShort);
     if (config.users.length < 2) {
@@ -141,7 +140,6 @@ export class PokerGame {
       (this.allInPlayers.length === 0 && this.playerSize === 1) ||
       (this.allInPlayers.length === 1 && this.playerSize === 0)
     ) {
-      console.log('only one player');
       this.gameOverType = EGameOverType.GAME_OVER;
       const winner = this.allInPlayers[0] || this.currPlayer.node;
       if (this.status === EGameStatus.GAME_FLOP) {
@@ -192,7 +190,6 @@ export class PokerGame {
    * @returns {Link<Player>}
    */
   setPlayer(users: IPlayer[]): Link<Player> {
-    console.log('init player ======================================================', users);
     users.forEach((u, position) => {
       const player = new Player({
         ...u,
@@ -279,7 +276,6 @@ export class PokerGame {
    */
   getFirstActionPlayer(): ILinkNode<Player> {
     const player = this.allPlayer.filter((p) => p.counter > 0 && p.position !== 0 && p.actionCommand !== 'fold')[0];
-    console.log('getFirstActionPlayer-------player', player);
     let link: ILinkNode<Player> | null = this.playerLink.link;
     for (let i = 0; i < this.playerSize; i++) {
       if (link?.node.userId === player?.userId) {
@@ -348,17 +344,14 @@ export class PokerGame {
    */
   startActionRound(time = ACTION_TIME) {
     this.actionTimeOut = setTimeout(async () => {
-      console.log('come in delay round --------2', this.actionTimeDelayCount);
       // delay action time
       if (this.actionTimeDelayCount > 0) {
-        console.log('come in delay round --------2', this.actionTimeDelayCount);
         this.actionTimeDelayCount--;
         clearTimeout(this.actionTimeOut);
         this.startActionRound(DELAY_ADD_TIME);
         return;
       }
       const userId = this.currPlayer.node.userId || '';
-      console.log('userId start', userId);
       this.action('fold');
       this.autoActionCallBack('fold', userId);
     }, time);
@@ -400,11 +393,6 @@ export class PokerGame {
         ) {
           throw 'incorrect action: check';
         }
-        console.log(
-          this.currPlayer.node.type === EPlayerType.BIG_BLIND && this.prevSize === this.smallBlind * 2,
-          'big blind',
-          this.currPlayer,
-        );
         size = -1;
       }
       if ([ECommand.RAISE, ECommand.BET].includes(command)) {
@@ -422,17 +410,6 @@ export class PokerGame {
         clearTimeout(this.actionTimeOut);
         this.currPlayer.node.action(commandString, this.prevSize);
         const nextPlayer = this.currPlayer.next.node;
-        console.log(
-          command,
-          nextPlayer.actionSize === this.prevSize &&
-            (nextPlayer.actionSize === this.currPlayer.node.actionSize || command === ECommand.FOLD) &&
-            this.prevSize !== this.smallBlind * 2 &&
-            this.prevSize !== 0,
-          'tst',
-          size,
-          nextPlayer.actionSize,
-          this.prevSize,
-        );
         // all check actionSize === -1
         // all player allin
         // only 2 player, curr player fold, next player already action
@@ -440,12 +417,10 @@ export class PokerGame {
         // pre flop big blind check and other player call
         // pre flop big blind fold and other player call
         if (this.isActionComplete(command, nextPlayer, size)) {
-          console.log('actionComplete');
           this.actionComplete();
           return;
         }
         this.prevSize = command === ECommand.FOLD ? this.prevSize : size;
-        console.log('preSize', this.prevSize);
         this.currPlayer = this.currPlayer.next;
         // action time out, auto action fold
         this.actionEndTime = Date.now() + ACTION_TIME;
@@ -526,13 +501,11 @@ export class PokerGame {
             currAllinPlayerPot += allinPlayer.actionSize;
           }
         });
-        console.log('evPot--------------------', this.prevPot, currAllinPlayerPot);
         allinPlayer.evPot = this.prevPot + currAllinPlayerPot;
         currAllinPlayerPot = 0;
       });
       this.allInPlayers = [...this.allInPlayers, ...this.currActionAllinPlayer];
       this.allInPlayers.sort((prev, next) => prev.evPot - next.evPot);
-      console.log('currActionAllinPlayer--------------------', this.allInPlayers, this.currActionAllinPlayer);
       // slide pot
       this.allInPlayers.forEach((p, key) => {
         if (key === 0) {
@@ -550,7 +523,6 @@ export class PokerGame {
     // new action ring first action is sb
     this.currPlayer = this.getFirstActionPlayer();
     this.setSate();
-    console.log(this.playerSize, 'playerS-------3', this.playerLink);
     if (this.status === EGameStatus.GAME_SHOWDOWN || this.playerSize <= 1) {
       setTimeout(() => {
         this.gameOver();
@@ -679,7 +651,6 @@ export class PokerGame {
           roundPotCount += income;
           winner.setIncome(income);
         }
-        console.log('winner----------', winnerList, roundPotCount, pot, leftPot);
       });
     });
   }
@@ -688,7 +659,6 @@ export class PokerGame {
    * Game over
    */
   gameOver() {
-    console.log('game over------------------');
     // only one player,other fold
     this.getWinner();
     // todo counting

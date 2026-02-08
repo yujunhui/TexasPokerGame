@@ -135,7 +135,6 @@ export class PokerStyle implements IPokerStyle {
       return;
     }
 
-    console.log('come in -------', isThree);
     // straight
     if (this.isStraight() !== '0') {
       this.pokerStyle[5] = `${this.isStraight()}`;

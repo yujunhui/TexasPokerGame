@@ -22,10 +22,9 @@ export class UserController extends BaseController {
   async index() {
     try {
       const state = this.ctx.state;
-      console.log(state, 'state');
       this.success(state.user.user);
     } catch (e) {
-      this.fail('server error');
+      this.fail(`server error: ${e}`);
     }
   }
 }

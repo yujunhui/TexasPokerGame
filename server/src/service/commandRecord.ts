@@ -63,7 +63,6 @@ export class CommandRecord implements ICommandRecordService {
         '\twhere command_record.gameId = ? and player.gameId = ?',
       [gameID, gameID],
     );
-    console.log(result, '=============command');
     return JSON.parse(JSON.stringify(result));
   }
 }

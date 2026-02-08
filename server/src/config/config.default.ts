@@ -47,7 +47,6 @@ export default (appInfo: MidwayAppInfo) => {
       const origin: string = ctx.get('origin');
       // access origin
       if (origin.indexOf('') > -1) {
-        // console.log('come in');
         return origin;
       } else {
         return '*';

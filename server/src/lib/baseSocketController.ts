@@ -79,7 +79,6 @@ export default class BaseSocketController extends Controller {
 
   protected updateGameInfo() {
     const roomInfo = this.getRoomInfo();
-    console.log(roomInfo, 'roomInfo ===============================');
     if (
       (roomInfo.game && roomInfo.game.status < 6) ||
       (roomInfo.game?.status === 6 && roomInfo.game.playerSize === 1)
@@ -99,7 +98,6 @@ export default class BaseSocketController extends Controller {
         p.winCountAtPreFlop = currPlayer?.winCountAtPreFlop || p.winCountAtPreFlop;
         p.raiseCountAtPreFlop = currPlayer?.raiseCountAtPreFlop || p.raiseCountAtPreFlop;
       });
-      console.log(roomInfo.players, 'roomInfo.players ===============================333');
       const gameInfo = {
         players: roomInfo.players.map((p) => {
           const currPlayer = roomInfo.game?.allPlayer.find((player) => player.userId === p.userId);
@@ -135,7 +133,6 @@ export default class BaseSocketController extends Controller {
         },
         smallBlind: roomInfo.config.smallBlind,
       };
-      console.log('gameInfo ==========', gameInfo);
       this.adapter(Online, OnlineAction.GameInfo, gameInfo);
     }
   }

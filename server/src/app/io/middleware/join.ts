@@ -34,8 +34,6 @@ export default () => {
     const nsp = app.io.of('/socket');
     const query = socket.handshake.query;
     const { room, roomConfig } = query;
-    console.log('socket-----join', id);
-    console.log('roomConfig-----roomConfig', JSON.parse(roomConfig));
     // room缓存信息是否存在
     if (!nsp.gameRooms) {
       nsp.gameRooms = [];
@@ -77,17 +75,12 @@ export default () => {
           },
         };
         nsp.gameRooms.push(gameRoom);
-        console.debug('...room not cached in nsp, create a new one');
-        console.debug(
-          '...current cached rooms: ' + JSON.stringify(nsp.gameRooms.map((room: IGameRoom) => room.number)),
-        );
         sendMsgToClients({
           roomNumber: room,
           players: gameRoom.roomInfo.players,
           action: OnlineAction.Players,
           nsp,
         });
-        console.debug('...update game room with players: ', JSON.stringify(gameRoom.roomInfo.players));
       } else {
         // current room is cached in the nsp
         // 判断当前用户在不在nsp缓存的room的players列表里
@@ -120,7 +113,6 @@ export default () => {
             const gameInfo = {
               players: roomInfo.players.map((p) => {
                 const currPlayer = roomInfo.game?.allPlayer.find((player) => player.userId === p.userId);
-                console.log('currPlayer ========== ', currPlayer);
                 return Object.assign(
                   {},
                   {

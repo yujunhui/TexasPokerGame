@@ -28,7 +28,6 @@ export class PlayerService implements IPlayerService {
     const result = await this.mysql.select('player', {
       where: { roomNumber },
     });
-    console.log(result);
     return result ? JSON.parse(JSON.stringify(result)) : [];
   }
 }

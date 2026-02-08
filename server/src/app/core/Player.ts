@@ -160,7 +160,6 @@ export class Player {
     if (command === ECommand.RAISE) {
       // raise must double to prevSize
       if (raiseSize >= prevSize * 2) {
-        console.log('player: RAISE----------------', prevSize, this.actionSize);
         const actionSize = this.actionSize >= 0 ? this.actionSize : 0;
         size = raiseSize - actionSize;
       } else {
@@ -169,12 +168,10 @@ export class Player {
     }
 
     if (command === ECommand.ALL_IN) {
-      console.log('allin================', this.counter);
       size = this.counter;
     }
 
     if (command === ECommand.CALL) {
-      console.log('player: call----------------', prevSize, this.actionSize);
       const actionSize = this.actionSize >= 0 ? this.actionSize : 0;
       size = prevSize - actionSize;
     }
@@ -190,7 +187,6 @@ export class Player {
       this.counter -= size;
       this.inPot += size;
     }
-    console.log('allin================', this.counter);
     this.actionSize += size;
     if (command === ECommand.RAISE) {
       this.actionSize = raiseSize;
@@ -208,7 +204,6 @@ export class Player {
   }
 
   setIncome(size: number) {
-    console.log('size', size);
     this.income = size;
     this.counter += size;
   }

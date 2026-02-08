@@ -11,11 +11,9 @@ export class GameService implements IGameService {
   mysql: any;
 
   async add(game: IGame) {
-    console.log('this.mysql', this.mysql);
     const gameInfo = await this.mysql.insert('game', {
       ...game,
     });
-    console.log(gameInfo);
     return { succeed: gameInfo.affectedRows === 1, id: gameInfo.insertId };
   }
 
@@ -23,7 +21,6 @@ export class GameService implements IGameService {
     const gameInfo = await this.mysql.update('game', {
       ...game,
     });
-    console.log(gameInfo);
     return { succeed: gameInfo.affectedRows === 1 };
   }
 
@@ -41,7 +38,6 @@ export class GameService implements IGameService {
     const result = await this.mysql.select('game', {
       where: { roomNumber },
     });
-    console.log(result, 'game -======================');
     return JSON.parse(JSON.stringify(result));
   }
 }
