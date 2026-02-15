@@ -68,12 +68,14 @@
           <p @click="standUp()">Stand Up</p>
           <p @click="showCounterRecord">Counter Record</p>
           <p @click="speakSettings()">Speak Settings</p>
+          <p @click="otherSettings()">Other Settings</p>
           <p @click="closeAudio()">Audio ({{ audioStatus ? 'On' : 'Off' }})</p>
         </div>
       </Transition>
     </div>
     <BuyIn :showBuyIn.sync="showBuyIn" v-model="buyInSize" @buyIn="buyIn"></BuyIn>
     <SpeakSettings :showSpeakSettings.sync="showSpeakSettings"></SpeakSettings>
+    <OtherSettings :showOtherSettings.sync="showOtherSettings"></OtherSettings>
     <toast :show.sync="showMsg" :text="msg"></toast>
     <Transition name="fade">
       <record :players="players" v-model="showRecord" v-show="showRecord"></record>
@@ -97,6 +99,7 @@ import commonCard from '@/components/CommonCard.vue';
 import gameRecord from '@/components/GameRecord.vue';
 import Loader from '@/components/Loader.vue';
 import notice from '@/components/Notice.vue';
+import OtherSettings from '@/components/OtherSettings.vue';
 import record from '@/components/Record.vue';
 import sendMsg from '@/components/SendMsg.vue';
 import sitList from '@/components/SitList.vue';
@@ -112,6 +115,7 @@ import { ILinkNode, Link } from '@/utils/Link';
 import { PokerStyle } from '@/utils/PokerStyle';
 import * as CustomAudio from '@/utils/audio';
 import { MaxBuyInFactor, Online, OnlineAction, P2PAction } from '@/utils/constant';
+import { showTurnNotification, isNotificationGranted, requestNotificationPermission } from '@/utils/notification';
 import origin from '@/utils/origin';
 import { Howl } from 'howler';
 import cookie from 'js-cookie';
@@ -159,6 +163,7 @@ const ACTION_TIME = 30;
     sendMsg,
     animation,
     SpeakSettings,
+    OtherSettings,
     Loader,
   },
 })
@@ -299,6 +304,7 @@ export default class Game extends Vue {
   public showRecord = false;
   public playersStatus: IPlayersStatus = {};
   public showSpeakSettings = false;
+  public showOtherSettings = false;
 
   @Watch('latestSpecialAction')
   public privateActionNoticeChange(newValue: ILatestActionData, oldValue: ILatestActionData) {
@@ -359,6 +365,11 @@ export default class Game extends Vue {
     // Reminder for current user
     if (this.audioStatus && this.isAction && this.playReminderSound()) {
       this.speakText(this.userInfo.nickName + ',到你啦!');
+    }
+
+    // Web Notification for current user's turn
+    if (this.isAction) {
+      showTurnNotification(this.userInfo.nickName, this.pot);
     }
 
     if (this.isPlay && this.actionEndTime) {
@@ -750,6 +761,11 @@ export default class Game extends Vue {
     this.showSetting = false;
   }
 
+  public otherSettings() {
+    this.showOtherSettings = true;
+    this.showSetting = false;
+  }
+
   public toggleSetting() {
     this.showSetting = !this.showSetting;
   }
@@ -843,6 +859,10 @@ export default class Game extends Vue {
       this.socketInit();
       if (!this.sitLink) {
         this.initSitLink();
+      }
+      // Request notification permission when entering game
+      if (!isNotificationGranted()) {
+        requestNotificationPermission();
       }
     } catch (e) {
       console.log(e);
