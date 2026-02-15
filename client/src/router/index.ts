@@ -15,7 +15,7 @@ const routes: RouteConfig[] = [
     name: 'home',
     component: Home,
     meta: {
-      title: 'home',
+      title: 'dzp|home',
       needLogin: true,
     },
   },
@@ -24,7 +24,7 @@ const routes: RouteConfig[] = [
     name: 'login',
     component: Login,
     meta: {
-      title: 'login',
+      title: 'dzp|login',
     },
   },
   {
@@ -32,7 +32,7 @@ const routes: RouteConfig[] = [
     name: 'register',
     component: Register,
     meta: {
-      title: 'create account',
+      title: 'dzp|create account',
     },
   },
   {
@@ -40,7 +40,7 @@ const routes: RouteConfig[] = [
     name: 'game',
     component: Game,
     meta: {
-      title: 'game',
+      title: 'dzp|game',
       needLogin: true,
     },
   },
