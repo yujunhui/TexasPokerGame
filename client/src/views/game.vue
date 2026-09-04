@@ -331,6 +331,13 @@ export default class Game extends Vue {
     }
   }
 
+  @Watch('actionEndTime')
+  public wActionEndTime(val: number) {
+    if (val > 0) {
+      localStorage.setItem('actionEndTime', val.toString());
+    }
+  }
+
   public playReminderSound() {
     const reminderSetting = localStorage.getItem('playReminderSound');
     return reminderSetting !== null ? reminderSetting === 'true' : true;
@@ -855,6 +862,11 @@ export default class Game extends Vue {
 
   public async created() {
     try {
+      const savedEndTime = localStorage.getItem('actionEndTime');
+      if (savedEndTime) {
+        this.actionEndTime = Number(savedEndTime);
+      }
+
       await this.autoJoinRoom();
       this.socketInit();
       if (!this.sitLink) {
